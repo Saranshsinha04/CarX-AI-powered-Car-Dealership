@@ -1,0 +1,524 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  SUPER_ADMIN
+  DEALERSHIP_ADMIN
+  SALES_MANAGER
+  SALES_AGENT
+  CUSTOMER
+}
+
+enum VehicleStatus {
+  AVAILABLE
+  RESERVED
+  SOLD
+  MAINTENANCE
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  TEST_DRIVE
+  NEGOTIATION
+  WON
+  LOST
+}
+
+enum AppointmentStatus {
+  UPCOMING
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+model Dealership {
+  id              String   @id @default(uuid())
+  name            String
+  slug            String   @unique
+  tagline         String?
+  email           String
+  phone           String
+  whatsapp        String?
+  address         String
+  city            String
+  state           String
+  postalCode      String?
+  country         String   @default("India")
+  currency        String   @default("INR")
+  currencySymbol  String   @default("₹")
+  logoUrl         String?
+  heroImageUrl    String?
+  status          String   @default("ACTIVE")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  settings          DealershipSettings?
+  users             User[]
+  vehicles          Vehicle[]
+  customers         Customer[]
+  leads             Lead[]
+  appointments      Appointment[]
+  financingRequests FinancingRequest[]
+  tradeInRequests   TradeInRequest[]
+  conversations     Conversation[]
+  knowledgeDocs     KnowledgeDocument[]
+  analyticsEvents   AnalyticsEvent[]
+  auditLogs         AuditLog[]
+  notifications     Notification[]
+  aiInteractions    AiInteraction[]
+
+  @@index([slug])
+  @@index([status])
+}
+
+model DealershipSettings {
+  id                         String     @id @default(uuid())
+  dealershipId               String     @unique
+  primaryColor               String     @default("#026ac9")
+  secondaryColor             String     @default("#0f172a")
+  accentColor                String     @default("#f59e0b")
+  aboutText                  String     @db.Text
+  openingHours               Json
+  socialLinks                Json?
+  metaTitle                  String?
+  metaDescription            String?
+  seoKeywords                String?
+  defaultDownPaymentPercent  Float      @default(20.0)
+  defaultInterestRate        Float      @default(8.99)
+  defaultLoanDurationMonths  Int        @default(60)
+  enableAiFinder             Boolean    @default(true)
+  enableTradeInEstimator     Boolean    @default(true)
+  enableEmiCalculator        Boolean    @default(true)
+  createdAt                  DateTime   @default(now())
+  updatedAt                  DateTime   @updatedAt
+
+  dealership Dealership @relation(fields: [dealershipId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(uuid())
+  dealershipId  String
+  name          String
+  email         String    @unique
+  phone         String?
+  passwordHash  String
+  role          Role      @default(SALES_AGENT)
+  status        String    @default("ACTIVE")
+  avatarUrl     String?
+  lastLoginAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  dealership    Dealership @relation(fields: [dealershipId], references: [id], onDelete: Cascade)
+  assignedLeads Lead[]     @relation("AssignedLeads")
+  leadNotes     LeadNote[]
+  auditLogs     AuditLog[]
+  notifications Notification[]
+
+  @@index([dealershipId])
+  @@index([email])
+}
+
+model Vehicle {
+  id                 String        @id @default(uuid())
+  dealershipId       String
+  vin                String?       @unique
+  stockNumber        String?       @unique
+  make               String
+  model              String
+  year               Int
+  trim               String?
+  bodyType           String        // SUV, Sedan, Hatchback, EV, Luxury, Coupe, MUV
+  condition          String        // NEW, USED, CERTIFIED_PRE_OWNED
+  price              Float         // in INR
+  originalPrice      Float?
+  mileageKm          Int           @default(0)
+  fuelType           String        // Petrol, Diesel, Electric, Hybrid, CNG
+  transmission       String        // Automatic, Manual, DCT, CVT, AMT
+  engineCapacityCc   Int?
+  powerBhp           Int?
+  torqueNm           Int?
+  fuelEfficiencyKmpl Float?
+  seatingCapacity    Int           @default(5)
+  exteriorColor      String
+  interiorColor      String?
+  drivetrain         String?       @default("FWD")
+  status             VehicleStatus @default(AVAILABLE)
+  isFeatured         Boolean       @default(false)
+  description        String        @db.Text
+  warranty           String?
+  ownershipHistory   String?       @default("1st Owner")
+  registrationYear   Int?
+  insuranceValidity  String?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  dealership        Dealership         @relation(fields: [dealershipId], references: [id], onDelete: Cascade)
+  images            VehicleImage[]
+  features          VehicleFeature[]
+  leads             Lead[]
+  appointments      Appointment[]
+  financingRequests FinancingRequest[]
+  favorites         Favorite[]
+  comparisons       Comparison[]
+
+  @@index([dealershipId, status])
+  @@index([dealershipId, price])
+  @@index([dealershipId, bodyType])
+  @@index([dealershipId, make])
+  @@index([dealershipId, fuelType])
+  @@index([dealershipId, transmission])
+  @@index([dealershipId, condition])
+  @@index([isFeatured])
+}
+
+model VehicleImage {
+  id           String   @id @default(uuid())
+  vehicleId    String
+  url          String
+  caption      String?
+  isPrimary    Boolean  @default(false)
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@index([vehicleId])
+  @@index([isPrimary])
+}
+
+model VehicleFeature {
+  id        String   @id @default(uuid())
+  vehicleId String
+  category  String   // Safety, Comfort, Infotainment, Performance, Exterior
+  name      String
+  createdAt DateTime @default(now())
+
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@index([vehicleId])
+  @@index([category])
+}
+
+model Customer {
+  id           String    @id @default(uuid())
+  dealershipId String
+  name         String
+  email        String
+  phone        String
+  address      String?
+  city         String?
+  state        String?
+  preferences  Json?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  dealership        Dealership         @relation(fields: [dealershipId], references: [id], onDelete: Cascade)
+  leads             Lead[]
+  appointments      Appointment[]
+  financingRequests FinancingRequest[]
+  tradeInRequests   TradeInRequest[]
+  conversations     Conversation[]
+
+  @@index([dealershipId])
+  @@index([email])
+  @@index([phone])
+}
+
+model Lead {
+  id                    String     @id @default(uuid())
+  dealershipId          String
+  customerId            String?
+  assignedUserId        String?
+  vehicleId             String?
+  source                String     @default("WEBSITE")
+  status                LeadStatus @default(NEW)
+  priority              String     @default("MEDIUM")
+  intentScore           Int        @default(50)
+  budgetMin             Float?
+  budgetMax             Float?
+  preferredTimeline     String?
+  preferredTransmission String?
+  preferredBodyType     String?
+  notesSummary          String?    @db.Text
+  aiSummary             String?    @db.Text
+  lastContactAt         DateTime?
+  nextFollowUpAt        DateTime?
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
+
+  dealership  Dealership  @relation(fields: [dealershipId], references: [id], onDelete: Cascade)
+  customer    Customer?   @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  assignedTo  User?       @relation("AssignedLeads", fields: [assignedUserId], references: [id], onDelete: SetNull)
+  vehicle     Vehicle?    @relation(fields: [vehicleId], references: [id], onDelete: SetNull)
+  notes       LeadNote[]
+
+  @@index([dealershipId, status])
+  @@index([dealershipId, assignedUserId])
+  @@index([dealershipId, intentScore])
+}
+
+model LeadNote {
+  id            String   @id @default(uuid())
+  leadId        String
+  userId        String?
+  isAiGenerated Boolean  @default(false)
+  content       String   @db.Text
+  createdAt     DateTime @default(now())
+
+  lead Lead  @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([leadId])
+}
+
+model Appointment {
+  id                 String            @id @default(uuid())
+  dealershipId       String
+  customerId         String?
+  vehicleId          String
+  type               String            @default("TEST_DRIVE")
+  status             AppointmentStatus @default(UPCOMING)
+  scheduledAt        DateTime
+  durationMinutes    Int               @default(45)
+  customerName       String
+  customerPhone      String
+  customerEmail      String
+  location           String            @default("Northstar Motors Showroom, Rajpur Road, Dehradun")
+  notes              String?           @db.Text
+  cancellationReason String?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+
+  dealership Dealership @relation(fields: [dealershipId], references: [id], onDelete: Cascade)
+  customer   Customer?  @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  vehicle    Vehicle    @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@index([dealershipId, status])
+  @@index([dealershipId, scheduledAt])
+  @@index([vehicleId])
+}
+
+model FinancingRequest {
+  id              String   @id @default(uuid())
+  dealershipId    String
+  customerId      String?
+  vehicleId       String
+  customerName    String
+  customerPhone   String
+  customerEmail   String
+  vehiclePrice    Float
+  downPayment     Float
+  loanAmount      Float
+  interestRate    Float
+  tenureMonths    Int
+  calculatedEmi   Float
+  employmentType  String?
+  annualIncome    Float?
+  status          String   @default("PENDING")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  dealership Dealership @relation(fields: [dealershipId], references: [id], onDelete: Cascade)
+  customer   Customer?  @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  vehicle    Vehicle    @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@index([dealershipId, status])
+}
+
+model TradeInRequest {
+  id                String   @id @default(uuid())
+  dealershipId      String
+  customerId        String?
+  targetVehicleId   String?
+  customerName      String
+  customerPhone     String
+  customerEmail     String
+  currentMake       String
+  currentModel      String
+  currentYear       Int
+  mileageKm         Int
+  fuelType          String
+  transmission      String
+  condition         String   // EXCELLENT, GOOD, FAIR, POOR
+  ownersCount       Int      @default(1)
+  accidentHistory   Boolean  @default(false)
+  estimatedValueMin Float?
+  estimatedValueMax Float?
+  notes             String?  @db.Text
+  status            String   @default("PENDING")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  dealership Dealership @relation(fields: [dealershipId], references: [id], onDelete: Cascade)
+  customer   Customer?  @relation(fields: [customerId], references: [id], onDelete: SetNull)
+
+  @@index([dealershipId, status])
+}
+
+model Favorite {
+  id        String   @id @default(uuid())
+  sessionId String
+  vehicleId String
+  createdAt DateTime @default(now())
+
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, vehicleId])
+  @@index([sessionId])
+}
+
+model Comparison {
+  id        String   @id @default(uuid())
+  sessionId String
+  vehicleId String
+  createdAt DateTime @default(now())
+
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, vehicleId])
+  @@index([sessionId])
+}
+
+model Conversation {
+  id            String   @id @default(uuid())
+  dealershipId  String
+  customerId    String?
+  sessionId     String
+  channel       String   @default("WEBSITE_WIDGET")
+  title         String?
+  intentSummary String?  @db.Text
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  dealership     Dealership      @relation(fields: [dealershipId], references: [id], onDelete: Cascade)
+  customer       Customer?       @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  messages       Message[]
+  aiInteractions AiInteraction[]
+
+  @@index([dealershipId, sessionId])
+}
+
+model Message {
+  id             String   @id @default(uuid())
+  conversationId String
+  sender         String   // USER, ASSISTANT, SYSTEM
+  content        String   @db.Text
+  toolCalls      Json?
+  toolResults    Json?
+  createdAt      DateTime @default(now())
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId])
+}
+
+model AiInteraction {
+  id              String   @id @default(uuid())
+  dealershipId    String
+  conversationId  String?
+  query           String   @db.Text
+  intent          String?
+  toolUsed        String?
+  parameters      Json?
+  responseSummary String?  @db.Text
+  executionTimeMs Int?
+  tokenCount      Int?
+  createdAt       DateTime @default(now())
+
+  dealership   Dealership    @relation(fields: [dealershipId], references: [id], onDelete: Cascade)
+  conversation Conversation? @relation(fields: [conversationId], references: [id], onDelete: SetNull)
+
+  @@index([dealershipId])
+  @@index([toolUsed])
+}
+
+model KnowledgeDocument {
+  id           String   @id @default(uuid())
+  dealershipId String
+  title        String
+  category     String   // POLICIES, FAQ, FINANCING, WARRANTY, SERVICE
+  content      String   @db.Text
+  status       String   @default("PUBLISHED")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  dealership Dealership       @relation(fields: [dealershipId], references: [id], onDelete: Cascade)
+  chunks     KnowledgeChunk[]
+
+  @@index([dealershipId, category])
+}
+
+model KnowledgeChunk {
+  id         String   @id @default(uuid())
+  documentId String
+  chunkIndex Int
+  content    String   @db.Text
+  createdAt  DateTime @default(now())
+
+  document KnowledgeDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@index([documentId])
+}
+
+model AnalyticsEvent {
+  id           String   @id @default(uuid())
+  dealershipId String
+  eventType    String   // PAGE_VIEW, VEHICLE_VIEW, SEARCH, AI_QUERY, FAVORITE, COMPARE, FINANCING_STARTED, TRADE_IN_STARTED, TEST_DRIVE_STARTED, LEAD_CREATED
+  sessionId    String?
+  vehicleId    String?
+  metadata     Json?
+  ipAddress    String?
+  userAgent    String?
+  createdAt    DateTime @default(now())
+
+  dealership Dealership @relation(fields: [dealershipId], references: [id], onDelete: Cascade)
+
+  @@index([dealershipId, eventType])
+  @@index([createdAt])
+  @@index([vehicleId])
+}
+
+model AuditLog {
+  id           String   @id @default(uuid())
+  dealershipId String
+  userId       String?
+  action       String   // CREATE_VEHICLE, UPDATE_LEAD, UPDATE_SETTINGS, DELETE_VEHICLE, LOGIN, LOGOUT
+  entityType   String
+  entityId     String?
+  details      Json?
+  ipAddress    String?
+  createdAt    DateTime @default(now())
+
+  dealership Dealership @relation(fields: [dealershipId], references: [id], onDelete: Cascade)
+  user       User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([dealershipId, action])
+  @@index([userId])
+}
+
+model Notification {
+  id           String   @id @default(uuid())
+  dealershipId String
+  userId       String?
+  title        String
+  message      String
+  type         String   @default("INFO") // INFO, SUCCESS, WARNING, ALERT
+  isRead       Boolean  @default(false)
+  link         String?
+  createdAt    DateTime @default(now())
+
+  dealership Dealership @relation(fields: [dealershipId], references: [id], onDelete: Cascade)
+  user       User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([dealershipId, isRead])
+  @@index([userId])
+}
