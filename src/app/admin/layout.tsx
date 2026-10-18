@@ -16,7 +16,6 @@ import {
   Menu,
   X,
   ExternalLink,
-  Sparkles,
   UserCheck,
 } from "lucide-react";
 
@@ -27,7 +26,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   // If on login page, render clean container
   if (pathname === "/admin/login") {
-    return <div className="min-h-screen bg-slate-950">{children}</div>;
+    return <div className="min-h-screen bg-[#06080d]">{children}</div>;
   }
 
   const menuItems = [
@@ -54,14 +53,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col md:flex-row">
+    <div className="min-h-screen bg-[#06080d] text-slate-100 flex flex-col md:flex-row">
       {/* Mobile Top Navigation */}
-      <div className="md:hidden glass-panel border-b border-slate-800 p-4 flex items-center justify-between">
+      <div className="md:hidden bg-[#090d15] border-b border-[#182133] p-4 flex items-center justify-between">
         <Link href="/admin" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-[#111724] border border-[#243048] flex items-center justify-center">
             <Car className="w-4 h-4 text-white" />
           </div>
-          <span className="font-bold text-white text-sm">Northstar Staff Portal</span>
+          <span className="font-bold text-white text-xs uppercase tracking-wider">Northstar Console</span>
         </Link>
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -73,19 +72,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Desktop / Collapsible Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 glass-panel bg-slate-950/95 border-r border-slate-800 flex flex-col justify-between transition-transform duration-200 md:static md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#090d15] border-r border-[#182133] flex flex-col justify-between transition-transform duration-200 md:static md:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="p-5 space-y-6">
           {/* Brand header */}
-          <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+          <div className="flex items-center justify-between pb-4 border-b border-[#182133]">
             <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-cyan-500 flex items-center justify-center">
+              <div className="w-9 h-9 rounded-lg bg-[#111724] border border-[#243048] flex items-center justify-center">
                 <Car className="w-4 h-4 text-white" />
               </div>
               <div>
-                <span className="font-extrabold text-sm text-white block">Northstar Motors</span>
+                <span className="font-black text-xs uppercase tracking-wider text-white block">Northstar Motors</span>
                 <span className="text-[10px] text-brand-400 font-semibold uppercase tracking-wider">
                   Admin Console
                 </span>
@@ -103,13 +102,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   key={item.href}
                   href={item.href}
                   onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                  className={`flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors ${
                     active
-                      ? "bg-brand-600 text-white shadow-md shadow-brand-500/20"
-                      : "text-slate-400 hover:text-slate-200 hover:bg-slate-900"
+                      ? "bg-[#111724] text-white border border-[#243048]"
+                      : "text-slate-400 hover:text-white hover:bg-[#0e1420]"
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${active ? "text-white" : "text-slate-400"}`} />
+                  <Icon className={`w-4 h-4 ${active ? "text-brand-400" : "text-slate-500"}`} />
                   <span>{item.label}</span>
                 </Link>
               );
@@ -117,37 +116,31 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </nav>
         </div>
 
-        {/* User Session & Quick links */}
-        <div className="p-4 border-t border-slate-800 space-y-3 bg-slate-950/60">
-          <div className="flex items-center justify-between text-xs text-slate-400">
-            <div>
-              <p className="font-bold text-white">Vikram Malhotra</p>
-              <p className="text-[11px] text-emerald-400">Dealership Admin</p>
-            </div>
-            <button
-              onClick={handleLogout}
-              className="p-1.5 rounded-lg hover:bg-slate-900 text-slate-400 hover:text-rose-400 transition-colors"
-              title="Logout"
-            >
-              <LogOut className="w-4 h-4" />
-            </button>
-          </div>
-
+        {/* Bottom Actions */}
+        <div className="p-5 border-t border-[#182133] space-y-2">
           <Link
             href="/"
             target="_blank"
-            className="flex items-center justify-center gap-1.5 w-full py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-[11px] font-semibold text-slate-300 transition-colors"
+            className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-[#0e1420] transition-colors"
           >
-            <span>View Live Customer Website</span>
-            <ExternalLink className="w-3 h-3 text-slate-400" />
+            <span>View Public Showroom</span>
+            <ExternalLink className="w-3.5 h-3.5" />
           </Link>
+
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-rose-400 hover:bg-rose-500/10 transition-colors"
+          >
+            <LogOut className="w-4 h-4" />
+            <span>Sign Out</span>
+          </button>
         </div>
       </aside>
 
-      {/* Main Content Area */}
-      <div className="flex-1 overflow-y-auto">
-        <div className="p-4 sm:p-8 max-w-7xl mx-auto space-y-8">{children}</div>
-      </div>
+      {/* Main Admin Content Area */}
+      <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+        {children}
+      </main>
     </div>
   );
 }

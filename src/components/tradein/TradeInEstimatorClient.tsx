@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { formatCurrency } from "@/lib/utils";
 import { estimateTradeInValue } from "@/lib/tradeIn";
-import { RefreshCw, CheckCircle2, ShieldAlert, ArrowRight, Gauge, Check } from "lucide-react";
+import { RefreshCw, CheckCircle2 } from "lucide-react";
 
 export function TradeInEstimatorClient() {
   const [make, setMake] = useState("Hyundai");
@@ -71,26 +71,26 @@ export function TradeInEstimatorClient() {
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
       {/* Left: Input Form */}
       <div className="lg:col-span-7 space-y-6">
-        <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-800 space-y-6 shadow-2xl">
-          <div className="flex items-center gap-3 border-b border-slate-800 pb-4">
-            <div className="w-10 h-10 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-400">
+        <div className="bg-[#090d15] border border-[#1b2334] rounded-xl p-6 sm:p-8 space-y-6 shadow-xl">
+          <div className="flex items-center gap-3 border-b border-[#182133] pb-4">
+            <div className="w-10 h-10 rounded-lg bg-[#111724] border border-[#243048] flex items-center justify-center text-brand-400">
               <RefreshCw className="w-5 h-5" />
             </div>
             <div>
               <h2 className="text-xl font-bold text-white">Car Valuation Estimator</h2>
-              <p className="text-xs text-slate-400">Real-time market algorithmic calculation</p>
+              <p className="text-xs text-slate-400">Real-time market algorithmic calculation based on Uttarakhand auction data</p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">
                 Brand / Manufacturer
               </label>
               <select
                 value={make}
                 onChange={(e) => setMake(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-brand-500"
+                className="w-full bg-[#06080d] border border-[#1b2334] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500"
               >
                 <option value="Hyundai">Hyundai</option>
                 <option value="Mahindra">Mahindra</option>
@@ -105,7 +105,7 @@ export function TradeInEstimatorClient() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">
                 Model Name
               </label>
               <input
@@ -113,14 +113,14 @@ export function TradeInEstimatorClient() {
                 value={model}
                 onChange={(e) => setModel(e.target.value)}
                 placeholder="e.g. Creta, Thar, Swift, City"
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-brand-500"
+                className="w-full bg-[#06080d] border border-[#1b2334] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">
                 Registration Year: {year}
               </label>
               <input
@@ -135,14 +135,14 @@ export function TradeInEstimatorClient() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">
                 Kilometers Driven: {mileageKm.toLocaleString()} km
               </label>
               <input
                 type="range"
                 min="5000"
-                max="160000"
-                step="5000"
+                max="180000"
+                step="2500"
                 value={mileageKm}
                 onChange={(e) => setMileageKm(Number(e.target.value))}
                 className="w-full accent-brand-500"
@@ -150,115 +150,114 @@ export function TradeInEstimatorClient() {
             </div>
           </div>
 
-          {/* Condition Select */}
+          {/* Condition Selector */}
           <div className="space-y-2">
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
-              Vehicle Overall Condition
+            <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+              Overall Vehicle Condition
             </label>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
               {[
-                { label: "Excellent", val: "EXCELLENT", desc: "No dents, perfect engine" },
-                { label: "Good", val: "GOOD", desc: "Minor scratch, well maintained" },
-                { label: "Fair", val: "FAIR", desc: "Noticeable wear, needs service" },
-                { label: "Poor", val: "POOR", desc: "Major repair needed" },
+                { val: "EXCELLENT", label: "Excellent", desc: "No scratch, flawless service record" },
+                { val: "GOOD", label: "Good", desc: "Minor wear, well maintained" },
+                { val: "FAIR", label: "Fair", desc: "Visible wear, periodic service due" },
+                { val: "POOR", label: "Poor", desc: "Needs mechanical/body work" },
               ].map((c) => (
                 <button
                   key={c.val}
                   type="button"
                   onClick={() => setCondition(c.val as any)}
-                  className={`p-3 rounded-xl border text-left transition-all ${
+                  className={`p-3 rounded-lg border text-left transition-all ${
                     condition === c.val
-                      ? "bg-brand-600/20 border-brand-500 text-white"
-                      : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
+                      ? "bg-brand-600 text-white border-brand-500"
+                      : "bg-[#0e1420] text-slate-300 border-[#1e273a] hover:bg-[#161f30]"
                   }`}
                 >
-                  <p className="font-bold text-xs">{c.label}</p>
-                  <p className="text-[10px] text-slate-400 mt-0.5">{c.desc}</p>
+                  <p className="font-bold">{c.label}</p>
+                  <p className="text-[10px] opacity-80 mt-0.5">{c.desc}</p>
                 </button>
               ))}
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-slate-800">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">
                 Number of Previous Owners
               </label>
-              <div className="flex items-center gap-2">
-                {[1, 2, 3, "4+"].map((num, i) => (
-                  <button
-                    key={num}
-                    type="button"
-                    onClick={() => setOwnersCount(i + 1)}
-                    className={`flex-1 py-2 rounded-lg text-xs font-bold border transition-colors ${
-                      ownersCount === i + 1
-                        ? "bg-brand-600 border-brand-500 text-white"
-                        : "bg-slate-950 border-slate-800 text-slate-400"
-                    }`}
-                  >
-                    {num}
-                  </button>
-                ))}
-              </div>
+              <select
+                value={ownersCount}
+                onChange={(e) => setOwnersCount(Number(e.target.value))}
+                className="w-full bg-[#06080d] border border-[#1b2334] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500"
+              >
+                <option value={1}>1st Owner</option>
+                <option value={2}>2nd Owner</option>
+                <option value={3}>3rd Owner</option>
+                <option value={4}>4+ Owners</option>
+              </select>
             </div>
 
-            <div className="flex flex-col justify-end">
-              <label className="flex items-center gap-2 cursor-pointer bg-slate-950 p-2.5 rounded-xl border border-slate-800">
-                <input
-                  type="checkbox"
-                  checked={accidentHistory}
-                  onChange={(e) => setAccidentHistory(e.target.checked)}
-                  className="rounded text-brand-500 accent-brand-500 w-4 h-4"
-                />
-                <span className="text-xs text-slate-300 font-medium">Major Accident or Insurance Claim History</span>
+            <div className="flex items-center gap-3 pt-5">
+              <input
+                type="checkbox"
+                id="accidentHistory"
+                checked={accidentHistory}
+                onChange={(e) => setAccidentHistory(e.target.checked)}
+                className="w-4 h-4 rounded bg-[#06080d] border-[#1b2334] text-brand-500 focus:ring-0"
+              />
+              <label htmlFor="accidentHistory" className="text-xs text-slate-300">
+                Major accident history or structural damage
               </label>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Right: Live Valuation Card & Inspection Booking */}
+      {/* Right: Estimated Value & Appointment Booking */}
       <div className="lg:col-span-5 space-y-6">
-        <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-800 space-y-5 shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-40 h-40 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
-
+        <div className="bg-[#090d15] border border-[#1b2334] rounded-xl p-6 sm:p-8 space-y-6 shadow-xl">
           <div>
-            <span className="text-xs font-bold text-emerald-400 uppercase tracking-widest">
-              Instant Algorithmic Valuation
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+              Estimated Showroom Valuation
             </span>
             <div className="text-3xl sm:text-4xl font-black text-white mt-1 tracking-tight">
-              {formatCurrency(valuation.estimatedMin, true)} – {formatCurrency(valuation.estimatedMax, true)}
+              {formatCurrency(valuation.estimatedMin)} – {formatCurrency(valuation.estimatedMax)}
             </div>
-            <p className="text-xs text-slate-400 mt-1 font-medium">
-              Estimated Market Value Range ({year} {make} {model})
+            <p className="text-xs text-slate-400 mt-1">
+              Mid-point baseline: <strong>{formatCurrency(Math.round((valuation.estimatedMin + valuation.estimatedMax) / 2))}</strong>
             </p>
           </div>
 
-          <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center justify-between text-xs">
-            <span className="text-slate-400">Valuation Confidence</span>
-            <span className="font-bold text-emerald-400">{valuation.confidenceScore}% (High)</span>
+          <div className="space-y-2 pt-3 border-t border-[#182133] text-xs">
+            <div className="flex justify-between py-1 border-b border-[#182133]">
+              <span className="text-slate-400">Total Depreciation</span>
+              <span className="font-semibold text-slate-200">{valuation.depreciationRate}%</span>
+            </div>
+            <div className="flex justify-between py-1 border-b border-[#182133]">
+              <span className="text-slate-400">Condition Rating</span>
+              <span className="font-semibold text-slate-200">{condition}</span>
+            </div>
+            <div className="flex justify-between py-1 border-b border-[#182133]">
+              <span className="text-slate-400">Confidence Score</span>
+              <span className="font-semibold text-emerald-400">{valuation.confidenceScore}%</span>
+            </div>
           </div>
-
-          <p className="text-[11px] text-slate-400 leading-relaxed border-t border-slate-800 pt-3">
-            ⚠️ <strong>Estimate Disclaimer:</strong> {valuation.disclaimer}
-          </p>
         </div>
 
-        {/* Schedule Physical Doorstep Inspection Form */}
-        <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-800 space-y-4">
+        {/* Schedule Physical Doorstep Inspection */}
+        <div className="bg-[#090d15] border border-[#1b2334] rounded-xl p-6 sm:p-8 space-y-4 shadow-xl">
           {isSubmitted ? (
-            <div className="py-6 text-center space-y-3">
-              <CheckCircle2 className="w-12 h-12 text-emerald-400 mx-auto" />
-              <h4 className="text-xl font-bold text-white">Valuation Request Booked!</h4>
+            <div className="py-6 text-center space-y-2">
+              <CheckCircle2 className="w-10 h-10 text-emerald-400 mx-auto" />
+              <h4 className="text-base font-bold text-white">Valuation Request Registered</h4>
               <p className="text-xs text-slate-300">
-                A Northstar automotive evaluator will contact you at {customerPhone} to schedule your free physical inspection in Dehradun.
+                Our trade-in evaluator in Dehradun will call you at {customerPhone} to schedule a free physical inspection.
               </p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3">
               <div>
-                <h3 className="text-lg font-bold text-white">Lock In Your Trade-In Value</h3>
-                <p className="text-xs text-slate-400 mt-0.5">Book free doorstep evaluation anywhere in Dehradun</p>
+                <h3 className="text-base font-bold text-white">Lock This Offer & Book Free Doorstep Inspection</h3>
+                <p className="text-xs text-slate-400 mt-0.5">Free doorstep physical evaluation anywhere across Dehradun & Mussoorie</p>
               </div>
 
               <div>
@@ -269,39 +268,39 @@ export function TradeInEstimatorClient() {
                   placeholder="Rahul Sharma"
                   value={customerName}
                   onChange={(e) => setCustomerName(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-brand-500"
+                  className="w-full bg-[#06080d] border border-[#1b2334] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Phone Number (Required)</label>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Phone Number</label>
                 <input
                   type="tel"
                   required
                   placeholder="+91 98970 12345"
                   value={customerPhone}
                   onChange={(e) => setCustomerPhone(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-brand-500"
+                  className="w-full bg-[#06080d] border border-[#1b2334] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Email Address</label>
-                <input
-                  type="email"
-                  placeholder="rahul@example.com"
-                  value={customerEmail}
-                  onChange={(e) => setCustomerEmail(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-brand-500"
+                <label className="block text-xs font-medium text-slate-300 mb-1">Additional Notes (Optional)</label>
+                <textarea
+                  rows={2}
+                  placeholder="e.g. Any service history, insurance status, tire condition..."
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  className="w-full bg-[#06080d] border border-[#1b2334] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-lg shadow-brand-500/25"
+                className="w-full py-3 rounded-lg bg-brand-600 hover:bg-brand-500 disabled:opacity-50 text-white font-semibold text-xs uppercase tracking-wider transition-colors"
               >
-                {isSubmitting ? "Booking Evaluation..." : "Book Free Inspection & Sell Car"}
+                {isSubmitting ? "Submitting..." : "Schedule Free Physical Inspection"}
               </button>
             </form>
           )}

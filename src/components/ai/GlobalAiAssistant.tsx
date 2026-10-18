@@ -4,18 +4,14 @@ import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  Sparkles,
   Send,
   X,
   Minimize2,
   Maximize2,
   Car,
   Calendar,
-  Layers,
-  ArrowRight,
-  ShieldCheck,
   CheckCircle2,
-  User,
+  Compass,
 } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 
@@ -35,11 +31,11 @@ interface Message {
 }
 
 const QUICK_PROMPTS = [
-  "Automatic SUV under ₹18 Lakh",
-  "Best car for mountain & highway driving",
-  "Electric cars with 400+ km range",
-  "Calculate EMI for ₹20 Lakh car",
-  "Showroom location & timing",
+  "Automatic SUV under ₹20 Lakh",
+  "Best vehicle for Dehradun & mountain roads",
+  "Electric vehicles with 400+ km range",
+  "Calculate EMI for ₹25 Lakh loan",
+  "Showroom location & visiting hours",
 ];
 
 export function GlobalAiAssistant({ isOpen, onClose, initialQuery }: GlobalAiAssistantProps) {
@@ -48,7 +44,7 @@ export function GlobalAiAssistant({ isOpen, onClose, initialQuery }: GlobalAiAss
       id: "welcome",
       role: "assistant",
       content:
-        "Hello! I'm **Northstar AI**, your smart automotive advisor at Northstar Motors Dehradun. Tell me what kind of vehicle you're looking for, your budget, or any questions about specifications, test drives, and financing!",
+        "Welcome to **Northstar Motors**. I am your showroom digital concierge. Ask me anything regarding our live Dehradun inventory, vehicle specifications, comparisons, test drive scheduling, or financing terms.",
     },
   ]);
   const [inputValue, setInputValue] = useState("");
@@ -103,7 +99,7 @@ export function GlobalAiAssistant({ isOpen, onClose, initialQuery }: GlobalAiAss
       const assistantMessage: Message = {
         id: `msg-${Date.now() + 1}`,
         role: "assistant",
-        content: data.message || "I found these relevant details from our database.",
+        content: data.message || "I found these relevant details from our inventory database.",
         matchedVehicles: data.matchedVehicles,
         suggestedActions: data.suggestedActions,
       };
@@ -116,7 +112,7 @@ export function GlobalAiAssistant({ isOpen, onClose, initialQuery }: GlobalAiAss
           id: `msg-err-${Date.now()}`,
           role: "assistant",
           content:
-            "I encountered a temporary connection issue. Please feel free to browse our inventory catalog directly or call our Dehradun showroom.",
+            "I encountered a temporary connection issue. Please browse our showroom catalog directly or call our sales desk at 0135-2748900.",
         },
       ]);
     } finally {
@@ -137,8 +133,8 @@ export function GlobalAiAssistant({ isOpen, onClose, initialQuery }: GlobalAiAss
           customerPhone: leadForm.phone,
           customerEmail: leadForm.email || "customer@northstarmotors.in",
           vehicleId: leadModalVehicle?.id,
-          source: "AI_CHAT",
-          aiSummary: `AI Consultation inquiry for ${leadModalVehicle ? leadModalVehicle.name : "Inventory inquiry"}`,
+          source: "CONCIERGE_CHAT",
+          aiSummary: `Digital Concierge test drive request for ${leadModalVehicle ? leadModalVehicle.name : "Showroom vehicle"}`,
         }),
       });
 
@@ -151,50 +147,51 @@ export function GlobalAiAssistant({ isOpen, onClose, initialQuery }: GlobalAiAss
           {
             id: `lead-ack-${Date.now()}`,
             role: "assistant",
-            content: `Thank you **${leadForm.name}**! Your request for the **${leadModalVehicle?.name || "vehicle"}** has been assigned to our Dehradun sales team. A specialist will call you at **${leadForm.phone}** shortly to arrange your test drive.`,
+            content: `Thank you **${leadForm.name}**! Your request for the **${leadModalVehicle?.name || "vehicle"}** has been scheduled. A sales manager from our Rajpur Road showroom will contact you at **${leadForm.phone}** to finalize your test drive timing.`,
           },
         ]);
-      }, 1500);
+      }, 1200);
     } catch (err) {
-      alert("Failed to submit inquiry. Please try again.");
+      alert("Failed to submit request.");
     }
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
       <div
-        className={`w-full glass-panel bg-slate-950/95 border border-slate-700/80 rounded-2xl flex flex-col shadow-2xl overflow-hidden transition-all duration-300 ${
+        className={`w-full bg-[#080c14] border border-[#1c2436] rounded-2xl flex flex-col shadow-2xl overflow-hidden transition-all duration-300 ${
           isExpanded ? "max-w-5xl h-[90vh]" : "max-w-2xl h-[650px] max-h-[88vh]"
         }`}
       >
-        {/* Header */}
-        <div className="px-5 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/60">
+        {/* Header - Luxury Showroom Styling */}
+        <div className="px-5 py-4 border-b border-[#182133] flex items-center justify-between bg-[#0b0f17]">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 via-indigo-600 to-purple-600 flex items-center justify-center shadow-lg shadow-brand-500/25">
-              <Sparkles className="w-4 h-4 text-amber-300" />
+            <div className="w-9 h-9 rounded-lg bg-[#111724] border border-[#243048] flex items-center justify-center">
+              <Compass className="w-5 h-5 text-brand-400" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="font-bold text-white text-base">Northstar AI Concierge</h3>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                  Live DB Grounded
+                <h3 className="font-bold text-white text-sm uppercase tracking-wider">Showroom Concierge</h3>
+                <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-[#111724] text-slate-300 border border-[#20293a]">
+                  PostgreSQL Grounded
                 </span>
               </div>
-              <p className="text-xs text-slate-400">Natural-language inventory search & automotive advisor</p>
+              <p className="text-[11px] text-slate-400">Natural-language inventory verification & consultation</p>
             </div>
           </div>
 
           <div className="flex items-center gap-1.5 text-slate-400">
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="p-1.5 rounded-lg hover:bg-slate-800 hover:text-white transition-colors"
+              className="p-1.5 rounded-lg hover:bg-[#141b2a] hover:text-white transition-colors"
               title={isExpanded ? "Standard Size" : "Expand Size"}
             >
               {isExpanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
             </button>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg hover:bg-slate-800 hover:text-white transition-colors"
+              className="p-1.5 rounded-lg hover:bg-[#141b2a] hover:text-white transition-colors"
+              aria-label="Close Concierge"
             >
               <X className="w-5 h-5" />
             </button>
@@ -202,73 +199,73 @@ export function GlobalAiAssistant({ isOpen, onClose, initialQuery }: GlobalAiAss
         </div>
 
         {/* Chat message flow */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 bg-[#080c14]">
           {messages.map((msg) => (
             <div
               key={msg.id}
               className={`flex flex-col ${msg.role === "user" ? "items-end" : "items-start"}`}
             >
               <div
-                className={`max-w-[88%] sm:max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+                className={`max-w-[88%] sm:max-w-[80%] rounded-xl px-4 py-3 text-xs sm:text-sm leading-relaxed ${
                   msg.role === "user"
-                    ? "bg-brand-600 text-white rounded-br-none shadow-md shadow-brand-600/20"
-                    : "bg-slate-900/90 text-slate-200 border border-slate-800 rounded-bl-none shadow-sm"
+                    ? "bg-brand-600 text-white rounded-br-none shadow-sm"
+                    : "bg-[#0d131f] text-slate-200 border border-[#1c2436] rounded-bl-none shadow-sm"
                 }`}
               >
                 <div className="whitespace-pre-line prose prose-invert prose-sm max-w-none">
                   {msg.content}
                 </div>
 
-                {/* Render Matched Vehicle Cards if present */}
+                {/* Render Matched Vehicle Cards */}
                 {msg.matchedVehicles && msg.matchedVehicles.length > 0 && (
-                  <div className="mt-4 pt-3 border-t border-slate-800 space-y-3">
-                    <p className="text-xs font-semibold text-brand-300 uppercase tracking-wider flex items-center gap-1">
-                      <Car className="w-3.5 h-3.5" />
+                  <div className="mt-4 pt-3 border-t border-[#1c2436] space-y-3">
+                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                      <Car className="w-3.5 h-3.5 text-brand-400" />
                       <span>Verified Showroom Inventory</span>
                     </p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {msg.matchedVehicles.map((car: any) => (
                         <div
                           key={car.id}
-                          className="bg-slate-950/90 border border-slate-800 rounded-xl overflow-hidden hover:border-brand-500/40 transition-all flex flex-col group"
+                          className="bg-[#0b0f17] border border-[#1b2334] rounded-lg overflow-hidden flex flex-col group hover:border-[#2b374e] transition-colors"
                         >
-                          <div className="relative h-32 w-full bg-slate-900 overflow-hidden">
+                          <div className="relative h-28 w-full bg-[#111622] overflow-hidden">
                             <Image
                               src={car.imageUrl || "https://images.unsplash.com/photo-1549399542-7e3f8b79c341"}
                               alt={car.name}
                               fill
-                              className="object-cover group-hover:scale-105 transition-transform duration-300"
-                              sizes="(max-width: 600px) 100vw, 300px"
+                              className="object-cover"
+                              sizes="300px"
                             />
-                            <div className="absolute top-2 right-2 bg-slate-950/80 backdrop-blur-md px-2 py-0.5 rounded text-[11px] font-bold text-amber-400 border border-amber-400/20">
+                            <div className="absolute top-2 right-2 bg-[#06080d]/90 px-2 py-0.5 rounded text-[10px] font-bold text-white border border-slate-700">
                               {car.matchScore ? `${car.matchScore}% Match` : "In Stock"}
                             </div>
                           </div>
 
                           <div className="p-3 flex-1 flex flex-col justify-between">
                             <div>
-                              <h4 className="font-bold text-white text-sm line-clamp-1">{car.name}</h4>
-                              <p className="text-emerald-400 font-extrabold text-sm mt-0.5">
+                              <h4 className="font-bold text-white text-xs line-clamp-1">{car.name}</h4>
+                              <p className="text-white font-extrabold text-xs mt-0.5">
                                 {car.formattedPrice || formatCurrency(car.price)}
                               </p>
                               {car.matchReason && (
-                                <p className="text-[11px] text-slate-400 mt-1 line-clamp-2">
+                                <p className="text-[10px] text-slate-400 mt-1 line-clamp-2">
                                   {car.matchReason}
                                 </p>
                               )}
                             </div>
 
-                            <div className="mt-3 pt-2 border-t border-slate-900 flex items-center gap-2">
+                            <div className="mt-3 pt-2 border-t border-[#182133] flex items-center gap-2">
                               <Link
                                 href={`/inventory/${car.id}`}
                                 onClick={onClose}
-                                className="flex-1 text-center py-1.5 px-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 transition-colors"
+                                className="flex-1 text-center py-1.5 px-2 rounded bg-[#111724] hover:bg-[#182133] text-[11px] font-semibold text-slate-200 transition-colors border border-[#202a3d]"
                               >
                                 View Specs
                               </Link>
                               <button
                                 onClick={() => setLeadModalVehicle(car)}
-                                className="py-1.5 px-2.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-xs font-semibold text-white transition-colors"
+                                className="py-1.5 px-2.5 rounded bg-brand-600 hover:bg-brand-500 text-[11px] font-semibold text-white transition-colors"
                               >
                                 Test Drive
                               </button>
@@ -285,9 +282,9 @@ export function GlobalAiAssistant({ isOpen, onClose, initialQuery }: GlobalAiAss
 
           {isLoading && (
             <div className="flex items-start gap-2">
-              <div className="px-4 py-3 rounded-2xl bg-slate-900/90 border border-slate-800 rounded-bl-none text-slate-400 text-xs flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-brand-500 animate-ping" />
-                <span>Searching real PostgreSQL inventory & verifying specs...</span>
+              <div className="px-4 py-3 rounded-xl bg-[#0d131f] border border-[#1c2436] text-slate-400 text-xs flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-brand-400 animate-pulse" />
+                <span>Searching PostgreSQL inventory & calculating specifications...</span>
               </div>
             </div>
           )}
@@ -296,12 +293,12 @@ export function GlobalAiAssistant({ isOpen, onClose, initialQuery }: GlobalAiAss
         </div>
 
         {/* Quick Suggestion Chips */}
-        <div className="px-4 py-2 border-t border-slate-800/80 bg-slate-950/70 overflow-x-auto flex items-center gap-2 no-scrollbar">
+        <div className="px-4 py-2 border-t border-[#182133] bg-[#090d15] overflow-x-auto flex items-center gap-2">
           {QUICK_PROMPTS.map((prompt) => (
             <button
               key={prompt}
               onClick={() => handleSendMessage(prompt)}
-              className="px-3 py-1.5 rounded-full text-xs font-medium bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap transition-colors"
+              className="px-3 py-1.5 rounded-md text-[11px] font-medium bg-[#0e1420] hover:bg-[#161f30] text-slate-300 hover:text-white border border-[#1e273a] whitespace-nowrap transition-colors"
             >
               {prompt}
             </button>
@@ -309,7 +306,7 @@ export function GlobalAiAssistant({ isOpen, onClose, initialQuery }: GlobalAiAss
         </div>
 
         {/* Chat input box */}
-        <div className="p-4 border-t border-slate-800 bg-slate-900/80">
+        <div className="p-4 border-t border-[#182133] bg-[#0b0f17]">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -321,25 +318,25 @@ export function GlobalAiAssistant({ isOpen, onClose, initialQuery }: GlobalAiAss
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder="e.g. Show me automatic SUVs under 18 lakh or book Creta test drive..."
-              className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-500"
+              placeholder="e.g. Show automatic SUVs under 20 lakh or schedule Creta test drive..."
+              className="flex-1 bg-[#06080d] border border-[#1b2334] rounded-lg px-4 py-2.5 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-500"
               disabled={isLoading}
             />
             <button
               type="submit"
               disabled={!inputValue.trim() || isLoading}
-              className="px-4 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 disabled:opacity-50 text-white font-medium text-sm flex items-center justify-center transition-all shadow-md shadow-brand-500/20"
+              className="px-4 py-2.5 rounded-lg bg-brand-600 hover:bg-brand-500 disabled:opacity-50 text-white font-semibold text-xs flex items-center justify-center transition-colors uppercase tracking-wider"
             >
-              <Send className="w-4 h-4" />
+              <Send className="w-3.5 h-3.5" />
             </button>
           </form>
         </div>
       </div>
 
-      {/* Test Drive / Lead Capture Modal */}
+      {/* Test Drive Scheduling Modal */}
       {leadModalVehicle && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
-          <div className="w-full max-w-md bg-slate-900 border border-slate-700 rounded-2xl p-6 shadow-2xl relative">
+        <div className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm">
+          <div className="w-full max-w-md bg-[#090d15] border border-[#1b2334] rounded-xl p-6 shadow-2xl relative">
             <button
               onClick={() => setLeadModalVehicle(null)}
               className="absolute top-4 right-4 text-slate-400 hover:text-white"
@@ -349,26 +346,28 @@ export function GlobalAiAssistant({ isOpen, onClose, initialQuery }: GlobalAiAss
 
             {leadSubmitted ? (
               <div className="py-8 text-center space-y-3">
-                <CheckCircle2 className="w-12 h-12 text-emerald-400 mx-auto animate-bounce" />
-                <h4 className="text-xl font-bold text-white">Inquiry Received!</h4>
-                <p className="text-sm text-slate-300">
-                  Our Northstar automotive specialist will contact you shortly to confirm your slot.
+                <CheckCircle2 className="w-10 h-10 text-emerald-400 mx-auto" />
+                <h4 className="text-lg font-bold text-white">Test Drive Scheduled</h4>
+                <p className="text-xs text-slate-300">
+                  Our sales manager will contact you to finalize appointment time.
                 </p>
               </div>
             ) : (
-              <div>
-                <div className="flex items-center gap-2 text-brand-400 font-semibold text-xs tracking-wider uppercase">
-                  <Calendar className="w-4 h-4" />
-                  <span>Book Doorstep or Showroom Test Drive</span>
+              <div className="space-y-4">
+                <div>
+                  <div className="flex items-center gap-1.5 text-brand-400 font-semibold text-xs tracking-wider uppercase">
+                    <Calendar className="w-3.5 h-3.5" />
+                    <span>Showroom / Doorstep Test Drive</span>
+                  </div>
+                  <h3 className="text-lg font-bold text-white mt-1">
+                    {leadModalVehicle.name}
+                  </h3>
+                  <p className="text-xs text-slate-400">
+                    Showroom: Rajpur Road, Dehradun
+                  </p>
                 </div>
-                <h3 className="text-lg font-bold text-white mt-1">
-                  {leadModalVehicle.name}
-                </h3>
-                <p className="text-xs text-slate-400 mt-0.5">
-                  Location: Northstar Motors Showroom, Rajpur Road, Dehradun
-                </p>
 
-                <form onSubmit={handleLeadSubmit} className="mt-5 space-y-3">
+                <form onSubmit={handleLeadSubmit} className="space-y-3">
                   <div>
                     <label className="block text-xs font-medium text-slate-300 mb-1">Your Full Name</label>
                     <input
@@ -377,18 +376,18 @@ export function GlobalAiAssistant({ isOpen, onClose, initialQuery }: GlobalAiAss
                       placeholder="Rahul Sharma"
                       value={leadForm.name}
                       onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500"
+                      className="w-full bg-[#06080d] border border-[#1b2334] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-slate-300 mb-1">Phone Number (Required)</label>
+                    <label className="block text-xs font-medium text-slate-300 mb-1">Phone Number</label>
                     <input
                       type="tel"
                       required
                       placeholder="+91 98970 12345"
                       value={leadForm.phone}
                       onChange={(e) => setLeadForm({ ...leadForm, phone: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500"
+                      className="w-full bg-[#06080d] border border-[#1b2334] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500"
                     />
                   </div>
                   <div>
@@ -398,13 +397,13 @@ export function GlobalAiAssistant({ isOpen, onClose, initialQuery }: GlobalAiAss
                       placeholder="rahul@example.com"
                       value={leadForm.email}
                       onChange={(e) => setLeadForm({ ...leadForm, email: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500"
+                      className="w-full bg-[#06080d] border border-[#1b2334] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full mt-4 py-3 rounded-xl bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white font-bold text-sm shadow-lg shadow-brand-500/25 transition-all"
+                    className="w-full mt-2 py-3 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs uppercase tracking-wider transition-colors"
                   >
                     Confirm Test Drive Booking
                   </button>

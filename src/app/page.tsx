@@ -2,7 +2,6 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  Sparkles,
   ArrowRight,
   ShieldCheck,
   CheckCircle2,
@@ -14,9 +13,10 @@ import {
   Settings2,
   MapPin,
   Star,
-  Layers,
   ChevronRight,
-  BadgeCheck,
+  Car,
+  Clock,
+  Phone,
 } from "lucide-react";
 import { getVehicles, getDealership } from "@/lib/db";
 import { formatCurrency } from "@/lib/utils";
@@ -32,203 +32,198 @@ export default async function HomePage() {
     {
       name: "SUVs & 4x4",
       type: "SUV",
-      count: "18+ In Stock",
+      count: "18 In Stock",
       image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80",
     },
     {
       name: "Executive Sedans",
       type: "Sedan",
-      count: "8+ In Stock",
+      count: "8 In Stock",
       image: "https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&w=600&q=80",
     },
     {
-      name: "Electric Vehicles (EV)",
+      name: "Electric Vehicles",
       type: "EV",
-      count: "5+ In Stock",
+      count: "5 In Stock",
       image: "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?auto=format&fit=crop&w=600&q=80",
     },
     {
       name: "Luxury Flagships",
       type: "Luxury",
-      count: "6+ In Stock",
+      count: "6 In Stock",
       image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=600&q=80",
     },
     {
       name: "City Hatchbacks",
       type: "Hatchback",
-      count: "4+ In Stock",
+      count: "4 In Stock",
       image: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=600&q=80",
     },
     {
       name: "Family MUVs & 7-Seaters",
       type: "MUV",
-      count: "5+ In Stock",
+      count: "5 In Stock",
       image: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=600&q=80",
     },
   ];
 
   return (
     <div className="space-y-24 pb-20 overflow-hidden">
-      {/* 1. HERO SECTION */}
-      <section className="relative min-h-[92vh] flex items-center justify-center pt-24 pb-16 px-4 sm:px-6 lg:px-8">
-        {/* Ambient background glow and grid */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(12,135,235,0.22),rgba(255,255,255,0))]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b08_1px,transparent_1px),linear-gradient(to_bottom,#1e293b08_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+      {/* 1. HERO SECTION - CARS ARE THE HERO */}
+      <section className="relative min-h-[85vh] flex items-center justify-center pt-20 pb-16 px-4 sm:px-6 lg:px-8 bg-[#06080d]">
+        {/* Subtle architectural grid pattern */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#141c2c18_1px,transparent_1px),linear-gradient(to_bottom,#141c2c18_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_70%_50%_at_50%_30%,#000_70%,transparent_100%)]" />
 
         <div className="relative max-w-5xl mx-auto text-center space-y-8">
-          {/* Location Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border-brand-500/30 text-xs font-semibold text-brand-300">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Northstar Motors • Rajpur Road, Dehradun</span>
+          {/* Showroom Location Header */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0d131f] border border-[#1e273a] text-xs font-semibold text-slate-300 tracking-wide uppercase">
+            <span className="w-2 h-2 rounded-full bg-emerald-500" />
+            <span>Northstar Motors · Rajpur Road, Dehradun</span>
           </div>
 
-          {/* Master Headline */}
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.1]">
-            Find the car that <br className="hidden sm:inline" />
-            <span className="bg-gradient-to-r from-brand-400 via-sky-300 to-indigo-400 bg-clip-text text-transparent">
-              fits your life.
-            </span>
+          {/* Master Headline - Solid, Bold, Automotive Typography */}
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white leading-[1.08]">
+            Find your next car. <br />
+            <span className="text-slate-300 font-extrabold">Browse 2026 showroom inventory.</span>
           </h1>
 
-          {/* Supporting Text */}
-          <p className="max-w-2xl mx-auto text-base sm:text-xl text-slate-300 leading-relaxed font-normal">
-            Explore our curated inventory, compare vehicles side-by-side, and let our AI assistant guide you directly to your ideal drive.
+          {/* Supporting Copy */}
+          <p className="max-w-2xl mx-auto text-base sm:text-lg text-slate-400 leading-relaxed font-normal">
+            Certified pre-owned and brand-new vehicles inspected across 150 checkpoints. Transparent pricing, guaranteed RC transfer, and doorstep test drives across Dehradun.
           </p>
 
-          {/* Interactive AI Search Widget */}
+          {/* Precision Inventory Search Bar */}
           <div className="pt-2 max-w-3xl mx-auto">
             <HomeSearchWidget />
           </div>
 
-          {/* CTAs */}
+          {/* Direct Actions */}
           <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
             <Link
               href="/inventory"
-              className="flex items-center gap-2 px-7 py-3.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-sm shadow-xl shadow-brand-500/25 hover:scale-[1.02] active:scale-[0.98] transition-all"
+              className="flex items-center gap-2 px-7 py-3.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs uppercase tracking-wider transition-colors shadow-lg shadow-brand-900/40"
             >
-              <span>Explore All Inventory</span>
+              <span>Explore All {featured.total || 36} Vehicles</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
 
             <Link
               href="/test-drive"
-              className="flex items-center gap-2 px-7 py-3.5 rounded-xl glass-panel text-slate-200 hover:text-white hover:bg-slate-900/90 font-semibold text-sm transition-all"
+              className="flex items-center gap-2 px-7 py-3.5 rounded-lg bg-[#0e1420] hover:bg-[#161f30] text-slate-200 hover:text-white font-semibold text-xs uppercase tracking-wider border border-[#222d42] transition-colors"
             >
               <CalendarCheck className="w-4 h-4 text-emerald-400" />
-              <span>Book Showroom Test Drive</span>
+              <span>Schedule Test Drive</span>
             </Link>
           </div>
 
-          {/* Trust Highlights */}
-          <div className="pt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 text-left max-w-4xl mx-auto border-t border-slate-800/60">
+          {/* Showroom Trust Metrics */}
+          <div className="pt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 text-left max-w-4xl mx-auto border-t border-[#182133]">
             <div className="p-3">
-              <p className="text-2xl font-black text-white">35+</p>
-              <p className="text-xs text-slate-400 mt-0.5">Verified Cars in Stock</p>
+              <p className="text-2xl font-black text-white">36</p>
+              <p className="text-xs text-slate-400 uppercase tracking-wider mt-0.5">Verified Cars in Stock</p>
             </div>
             <div className="p-3">
-              <p className="text-2xl font-black text-brand-400">150-Point</p>
-              <p className="text-xs text-slate-400 mt-0.5">Quality Certification</p>
+              <p className="text-2xl font-black text-white">150-Point</p>
+              <p className="text-xs text-slate-400 uppercase tracking-wider mt-0.5">Mechanical Inspection</p>
             </div>
             <div className="p-3">
-              <p className="text-2xl font-black text-amber-400">8.99%</p>
-              <p className="text-xs text-slate-400 mt-0.5">Instant Loan EMI</p>
+              <p className="text-2xl font-black text-white">8.99%</p>
+              <p className="text-xs text-slate-400 uppercase tracking-wider mt-0.5">Starting Loan EMI</p>
             </div>
             <div className="p-3">
-              <p className="text-2xl font-black text-emerald-400">Doorstep</p>
-              <p className="text-xs text-slate-400 mt-0.5">Test Drives in Dehradun</p>
+              <p className="text-2xl font-black text-white">Doorstep</p>
+              <p className="text-xs text-slate-400 uppercase tracking-wider mt-0.5">Test Drive in Dehradun</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 2. FEATURED INVENTORY CAROUSEL/GRID */}
+      {/* 2. FEATURED SHOWROOM INVENTORY */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#182133] pb-6">
           <div>
-            <div className="inline-flex items-center gap-2 text-brand-400 text-xs font-bold uppercase tracking-widest">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              <span>Handpicked Vehicles</span>
-            </div>
-            <h2 className="text-3xl font-extrabold text-white mt-1">Featured Showroom Inventory</h2>
+            <p className="text-xs font-semibold text-brand-400 tracking-widest uppercase">
+              Current Showroom Availability
+            </p>
+            <h2 className="text-3xl font-black text-white tracking-tight mt-1">Featured Inventory</h2>
             <p className="text-slate-400 text-sm mt-1">
               Top trending SUVs, sedans, and luxury models ready for immediate delivery in Dehradun.
             </p>
           </div>
           <Link
             href="/inventory"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-400 hover:text-brand-300"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-white uppercase tracking-wider"
           >
-            <span>View All {featured.total} Vehicles</span>
-            <ChevronRight className="w-4 h-4" />
+            <span>View All Stock ({featured.total || 36})</span>
+            <ChevronRight className="w-4 h-4 text-brand-400" />
           </Link>
         </div>
 
+        {/* Vehicle Cards Grid - Strictly designed around Rule 5 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {featured.vehicles.map((car: any) => (
             <div
               key={car.id}
-              className="glass-card rounded-2xl overflow-hidden flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1"
+              className="bg-[#0b0f17] border border-[#1b2334] hover:border-[#2b374e] rounded-xl overflow-hidden flex flex-col justify-between transition-all duration-300 hover:-translate-y-0.5 shadow-md"
             >
               <div>
-                {/* Image & Badges */}
-                <div className="relative h-56 w-full bg-slate-900 overflow-hidden">
+                {/* 1. Large Vehicle Image */}
+                <div className="relative h-56 w-full bg-[#111622] overflow-hidden">
                   <Image
                     src={car.images?.[0]?.url || "https://images.unsplash.com/photo-1549399542-7e3f8b79c341"}
                     alt={`${car.year} ${car.make} ${car.model}`}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="object-cover group-hover:scale-102 transition-transform duration-500"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-black/30" />
 
+                  {/* Informational Badges - Genuine status only */}
                   <div className="absolute top-3 left-3 flex items-center gap-2">
                     <span
-                      className={`px-2.5 py-1 rounded-md text-xs font-bold backdrop-blur-md ${
+                      className={`px-2.5 py-1 rounded text-[11px] font-bold tracking-wide uppercase ${
                         car.condition === "NEW"
-                          ? "bg-emerald-600/90 text-white"
+                          ? "bg-emerald-600 text-white"
                           : car.condition === "CERTIFIED_PRE_OWNED"
-                          ? "bg-purple-600/90 text-white"
-                          : "bg-slate-800/90 text-slate-200"
+                          ? "bg-[#182338] text-brand-300 border border-[#2b3a59]"
+                          : "bg-slate-800 text-slate-200"
                       }`}
                     >
-                      {car.condition === "CERTIFIED_PRE_OWNED" ? "Certified" : car.condition}
+                      {car.condition === "CERTIFIED_PRE_OWNED" ? "Certified Pre-Owned" : car.condition}
                     </span>
-                    <span className="px-2 py-1 rounded-md text-xs font-semibold bg-black/60 text-slate-200 backdrop-blur-md">
+                    <span className="px-2 py-1 rounded text-[11px] font-medium bg-[#06080d]/90 text-slate-300 border border-slate-700/50">
                       {car.fuelType}
-                    </span>
-                  </div>
-
-                  <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between">
-                    <div>
-                      <p className="text-xl font-extrabold text-white tracking-tight">
-                        {formatCurrency(car.price, true)}
-                      </p>
-                      {car.originalPrice && car.originalPrice > car.price && (
-                        <p className="text-xs text-slate-400 line-through">
-                          {formatCurrency(car.originalPrice, true)}
-                        </p>
-                      )}
-                    </div>
-                    <span className="text-[11px] font-semibold px-2 py-1 rounded bg-brand-500/20 text-brand-300 border border-brand-500/30">
-                      {car.transmission}
                     </span>
                   </div>
                 </div>
 
-                {/* Car Title & Specs Grid */}
+                {/* 2. Make, Model, Variant & Pricing */}
                 <div className="p-5 space-y-4">
                   <div>
-                    <h3 className="font-bold text-lg text-white group-hover:text-brand-400 transition-colors">
+                    <h3 className="font-bold text-lg text-white">
                       {car.year} {car.make} {car.model}
                     </h3>
-                    <p className="text-xs text-slate-400 mt-0.5 line-clamp-1">{car.trim || car.bodyType}</p>
+                    <p className="text-xs text-slate-400 mt-0.5 line-clamp-1">
+                      {car.trim || car.bodyType}
+                    </p>
                   </div>
 
-                  {/* Spec pills */}
-                  <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-800/80 text-xs text-slate-300">
+                  {/* Bold Price Display */}
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-2xl font-black text-white tracking-tight">
+                      {formatCurrency(car.price, true)}
+                    </span>
+                    {car.originalPrice && car.originalPrice > car.price && (
+                      <span className="text-xs text-slate-400 line-through">
+                        {formatCurrency(car.originalPrice, true)}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Key Specifications Row */}
+                  <div className="grid grid-cols-3 gap-2 pt-3 border-t border-[#182133] text-xs text-slate-300">
                     <div className="flex items-center gap-1.5">
                       <Gauge className="w-3.5 h-3.5 text-slate-400" />
-                      <span>{car.mileageKm ? `${car.mileageKm.toLocaleString()} km` : "Brand New"}</span>
+                      <span>{car.mileageKm ? `${car.mileageKm.toLocaleString()} km` : "New (0 km)"}</span>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <Fuel className="w-3.5 h-3.5 text-slate-400" />
@@ -242,17 +237,17 @@ export default async function HomePage() {
                 </div>
               </div>
 
-              {/* Action Buttons */}
+              {/* Primary & Secondary Actions */}
               <div className="px-5 pb-5 pt-0 flex items-center gap-2">
                 <Link
                   href={`/inventory/${car.id}`}
-                  className="flex-1 text-center py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition-colors border border-slate-800"
+                  className="flex-1 text-center py-2.5 rounded-lg bg-[#111724] hover:bg-[#182133] text-white font-semibold text-xs uppercase tracking-wider transition-colors border border-[#202a3d]"
                 >
-                  View Full Details
+                  View Details
                 </Link>
                 <Link
                   href={`/test-drive?vehicleId=${car.id}`}
-                  className="py-2.5 px-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs transition-colors flex items-center gap-1"
+                  className="py-2.5 px-3.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5"
                 >
                   <CalendarCheck className="w-3.5 h-3.5" />
                   <span>Test Drive</span>
@@ -265,14 +260,13 @@ export default async function HomePage() {
 
       {/* 3. BROWSE BY BODY TYPE */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div>
-          <div className="inline-flex items-center gap-2 text-brand-400 text-xs font-bold uppercase tracking-widest">
-            <Layers className="w-3.5 h-3.5 text-brand-400" />
-            <span>Tailored Segments</span>
-          </div>
-          <h2 className="text-3xl font-extrabold text-white mt-1">Browse by Body Type</h2>
+        <div className="border-b border-[#182133] pb-4">
+          <p className="text-xs font-semibold text-brand-400 tracking-widest uppercase">
+            Segment Navigation
+          </p>
+          <h2 className="text-3xl font-black text-white tracking-tight mt-1">Browse by Body Type</h2>
           <p className="text-slate-400 text-sm mt-1">
-            Choose the styling and performance profile suited to your daily driving needs.
+            Choose the styling and performance profile suited to your daily driving requirements.
           </p>
         </div>
 
@@ -281,115 +275,112 @@ export default async function HomePage() {
             <Link
               key={item.name}
               href={`/inventory?bodyType=${item.type}`}
-              className="glass-card rounded-2xl p-4 text-center hover:border-brand-500/50 transition-all group flex flex-col items-center justify-between"
+              className="bg-[#0b0f17] border border-[#1b2334] hover:border-brand-500/50 rounded-xl p-3.5 text-center transition-all group flex flex-col items-center justify-between"
             >
-              <div className="relative w-full h-24 rounded-xl overflow-hidden mb-3">
+              <div className="relative w-full h-24 rounded-lg overflow-hidden mb-3 bg-[#111622]">
                 <Image
                   src={item.image}
                   alt={item.name}
                   fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-300"
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
                   sizes="200px"
                 />
               </div>
-              <h4 className="font-bold text-sm text-white group-hover:text-brand-400 transition-colors">
+              <h3 className="font-bold text-xs text-white uppercase tracking-wider group-hover:text-brand-400 transition-colors">
                 {item.name}
-              </h4>
+              </h3>
               <p className="text-[11px] text-slate-400 mt-1">{item.count}</p>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* 4. WHY CHOOSE NORTHSTAR MOTORS */}
+      {/* 4. DEALERSHIP ADVANTAGE - AUTHENTIC VALUE INSTEAD OF 3 AI ICON BOXES */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="glass-panel rounded-3xl p-8 sm:p-12 border border-slate-800 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-brand-500/10 rounded-full blur-3xl pointer-events-none" />
-
-          <div className="max-w-2xl space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 text-brand-400 text-xs font-bold uppercase tracking-wider">
-              <BadgeCheck className="w-4 h-4" />
-              <span>The Northstar Assurance</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
-              Why Dehradun trusts Northstar Motors
+        <div className="bg-[#090d15] border border-[#1b2334] rounded-2xl p-8 sm:p-12 space-y-10">
+          <div className="max-w-3xl space-y-3">
+            <p className="text-xs font-semibold text-brand-400 tracking-widest uppercase">
+              Showroom Standard
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
+              Why car buyers choose Northstar Motors
             </h2>
-            <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-              We eliminate the friction and uncertainty of buying cars. Whether you are shopping for a brand-new SUV or a certified pre-owned car, every vehicle meets uncompromising safety and mechanical standards.
+            <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
+              We eliminate the friction and uncertainty of vehicle transactions. Every car listed on our showroom floor has passed verified background history, mechanical scrutiny, and transparent pricing standards.
             </p>
           </div>
 
-          <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
-                <ShieldCheck className="w-6 h-6" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-[#0e1420] border border-[#1c2436] rounded-xl p-6 space-y-3">
+              <div className="w-10 h-10 rounded-lg bg-[#141b2a] border border-[#243048] flex items-center justify-center text-brand-400">
+                <ShieldCheck className="w-5 h-5" />
               </div>
-              <h3 className="font-bold text-lg text-white">150-Point Quality Inspection</h3>
+              <h3 className="font-bold text-base text-white">150-Point Inspection</h3>
               <p className="text-slate-400 text-xs leading-relaxed">
-                Every vehicle undergoes thorough diagnostic testing covering engine, transmission, steering, brakes, suspension, electrical systems, and structural integrity.
+                Full diagnostic testing covering engine compression, transmission shifting, steering rack, suspension bushings, brakes, electrical harnesses, and paint depth analysis.
               </p>
             </div>
 
-            <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
-                <CheckCircle2 className="w-6 h-6" />
+            <div className="bg-[#0e1420] border border-[#1c2436] rounded-xl p-6 space-y-3">
+              <div className="w-10 h-10 rounded-lg bg-[#141b2a] border border-[#243048] flex items-center justify-center text-emerald-400">
+                <CheckCircle2 className="w-5 h-5" />
               </div>
-              <h3 className="font-bold text-lg text-white">Transparent & Fixed Pricing</h3>
+              <h3 className="font-bold text-base text-white">Fixed Price Assurance</h3>
               <p className="text-slate-400 text-xs leading-relaxed">
-                Zero hidden showroom fees, zero surprise paperwork charges. Honest market pricing backed by verified vehicle history reports.
+                Zero surprise dealer handling charges or inflated transfer fees. Direct ex-showroom pricing based on verified market valuations.
               </p>
             </div>
 
-            <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-400">
-                <CalendarCheck className="w-6 h-6" />
+            <div className="bg-[#0e1420] border border-[#1c2436] rounded-xl p-6 space-y-3">
+              <div className="w-10 h-10 rounded-lg bg-[#141b2a] border border-[#243048] flex items-center justify-center text-amber-400">
+                <CalendarCheck className="w-5 h-5" />
               </div>
-              <h3 className="font-bold text-lg text-white">Doorstep Test Drives</h3>
+              <h3 className="font-bold text-base text-white">Doorstep Test Drives</h3>
               <p className="text-slate-400 text-xs leading-relaxed">
-                We bring the vehicle directly to your home or office anywhere across Dehradun, Mussoorie foothills, and Rishikesh.
+                We deliver the test vehicle directly to your residence or workplace across Dehradun, Mussoorie foothills, and Rishikesh.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 5. FINANCING & TRADE-IN CTA BANNER */}
+      {/* 5. FINANCING & TRADE-IN SECTION */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Finance Promo */}
-          <div className="glass-card rounded-3xl p-8 border border-slate-800 flex flex-col justify-between space-y-6">
+          {/* Finance Panel */}
+          <div className="bg-[#090d15] border border-[#1b2334] rounded-2xl p-8 flex flex-col justify-between space-y-6">
             <div className="space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
-                <Calculator className="w-6 h-6" />
+              <div className="w-10 h-10 rounded-lg bg-[#141b2a] border border-[#243048] flex items-center justify-center text-amber-400">
+                <Calculator className="w-5 h-5" />
               </div>
-              <h3 className="text-2xl font-bold text-white">Instant Car Loans & Flexible EMI</h3>
-              <p className="text-slate-300 text-sm leading-relaxed">
-                Competitive auto financing starting at 8.99% per annum with tenures up to 7 years. Calculate exact monthly payments instantly online.
+              <h3 className="text-2xl font-bold text-white">Vehicle Financing & EMI</h3>
+              <p className="text-slate-400 text-sm leading-relaxed">
+                Competitive automotive finance with interest rates starting at 8.99% p.a. Flexible tenures from 1 to 7 years with instant reducing-balance calculation.
               </p>
             </div>
             <Link
               href="/finance"
-              className="inline-flex items-center justify-center gap-2 py-3 px-6 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition-all"
+              className="inline-flex items-center justify-center gap-2 py-3 px-6 rounded-lg bg-[#111724] hover:bg-[#182133] text-white font-semibold text-xs uppercase tracking-wider border border-[#243048] transition-colors"
             >
-              <span>Calculate Loan EMI</span>
+              <span>Calculate Monthly EMI</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
-          {/* Trade-in Promo */}
-          <div className="glass-card rounded-3xl p-8 border border-slate-800 flex flex-col justify-between space-y-6">
+          {/* Trade-In Panel */}
+          <div className="bg-[#090d15] border border-[#1b2334] rounded-2xl p-8 flex flex-col justify-between space-y-6">
             <div className="space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-400">
-                <RefreshCw className="w-6 h-6" />
+              <div className="w-10 h-10 rounded-lg bg-[#141b2a] border border-[#243048] flex items-center justify-center text-brand-400">
+                <RefreshCw className="w-5 h-5" />
               </div>
-              <h3 className="text-2xl font-bold text-white">Sell or Trade In Your Old Car</h3>
-              <p className="text-slate-300 text-sm leading-relaxed">
-                Get an instant algorithmic valuation in 60 seconds based on real sales data across Uttarakhand. Free physical doorstep inspection included.
+              <h3 className="text-2xl font-bold text-white">Trade In Your Existing Car</h3>
+              <p className="text-slate-400 text-sm leading-relaxed">
+                Receive an algorithmic trade-in valuation in 60 seconds based on current market auction transactions across Uttarakhand. Free physical doorstep evaluation included.
               </p>
             </div>
             <Link
               href="/trade-in"
-              className="inline-flex items-center justify-center gap-2 py-3 px-6 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-sm transition-all"
+              className="inline-flex items-center justify-center gap-2 py-3 px-6 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs uppercase tracking-wider transition-colors"
             >
               <span>Value Your Vehicle</span>
               <ArrowRight className="w-4 h-4" />
@@ -398,58 +389,67 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 6. LOCAL DEHRADUN SEO / SHOWROOM LOCATION SECTION */}
+      {/* 6. PHYSICAL SHOWROOM LOCATION & CONTACT */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="glass-panel rounded-3xl p-8 sm:p-12 border border-slate-800">
+        <div className="bg-[#090d15] border border-[#1b2334] rounded-2xl p-8 sm:p-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
             <div className="space-y-5">
-              <div className="inline-flex items-center gap-2 text-brand-400 text-xs font-bold uppercase tracking-widest">
+              <div className="inline-flex items-center gap-2 text-xs font-semibold text-brand-400 uppercase tracking-widest">
                 <MapPin className="w-4 h-4 text-emerald-400" />
-                <span>Visit Us in Dehradun</span>
+                <span>Showroom Location</span>
               </div>
-              <h2 className="text-3xl font-extrabold text-white">
-                Located on Rajpur Road, Dehradun
+              <h2 className="text-3xl font-black text-white tracking-tight">
+                Visit Our Rajpur Road Showroom
               </h2>
-              <p className="text-slate-300 text-sm leading-relaxed">
-                Our flagship showroom is centrally located on Rajpur Road near IT Park Chowk. Stop by to explore our full inventory in person, consult with our automotive specialists, or enjoy an espresso while we evaluate your trade-in car.
+              <p className="text-slate-400 text-sm leading-relaxed">
+                Our flagship showroom is centrally located on Rajpur Road near IT Park Chowk, Dehradun. Inspect our full vehicle fleet in person, conduct private test drives on uphill terrain, or consult with our automotive finance managers over an espresso.
               </p>
-              <div className="space-y-2 text-xs text-slate-300">
-                <p>📍 <strong>Address:</strong> Plot 42-B, Rajpur Road, Near IT Park Chowk, Dehradun, Uttarakhand 248001</p>
-                <p>📞 <strong>Sales Desk:</strong> +91 135 274 8900 | WhatsApp: +91 98970 12345</p>
-                <p>🕒 <strong>Hours:</strong> Mon – Sat: 9:00 AM – 8:00 PM | Sun: 10:00 AM – 6:00 PM</p>
+              <div className="space-y-2.5 text-xs text-slate-300">
+                <div className="flex items-start gap-2.5">
+                  <MapPin className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+                  <span>Plot 42-B, Rajpur Road, Near IT Park Chowk, Dehradun, Uttarakhand 248001</span>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <Phone className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>Sales Desk: +91 135 274 8900 | WhatsApp: +91 98970 12345</span>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <Clock className="w-4 h-4 text-amber-400 shrink-0" />
+                  <span>Mon – Sat: 9:00 AM – 8:00 PM | Sun: 10:00 AM – 6:00 PM</span>
+                </div>
               </div>
               <div className="pt-2 flex items-center gap-3">
                 <Link
                   href="/test-drive"
-                  className="px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs transition-colors"
+                  className="px-6 py-3 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs uppercase tracking-wider transition-colors"
                 >
-                  Schedule Showroom Tour
+                  Schedule Showroom Visit
                 </Link>
                 <Link
                   href="/contact"
-                  className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 font-semibold text-xs border border-slate-800 transition-colors"
+                  className="px-6 py-3 rounded-lg bg-[#111724] hover:bg-[#182133] text-slate-200 font-semibold text-xs uppercase tracking-wider border border-[#202a3d] transition-colors"
                 >
-                  Get Driving Directions
+                  Get Directions
                 </Link>
               </div>
             </div>
 
-            {/* Visual showroom preview card */}
-            <div className="relative h-72 sm:h-80 w-full rounded-2xl overflow-hidden border border-slate-800">
+            {/* Showroom Preview Photography */}
+            <div className="relative h-72 sm:h-80 w-full rounded-xl overflow-hidden border border-[#1b2334] bg-[#111622]">
               <Image
                 src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80"
                 alt="Northstar Motors Dehradun Showroom"
                 fill
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#06080d] via-transparent to-transparent" />
               <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs text-white">
                 <div className="flex items-center gap-1.5">
                   <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
                   <span className="font-bold">4.9 / 5.0</span>
-                  <span className="text-slate-400">(420+ Verified Reviews)</span>
+                  <span className="text-slate-400">(420+ Verified Client Reviews)</span>
                 </div>
-                <span className="bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/30 font-semibold">
+                <span className="bg-[#0b0f17]/90 text-emerald-400 px-2.5 py-1 rounded text-[11px] border border-[#1e273a] font-semibold">
                   Open Today
                 </span>
               </div>

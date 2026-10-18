@@ -5,20 +5,17 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   CalendarCheck,
-  PhoneCall,
+  Phone,
   Calculator,
   Layers,
-  Sparkles,
   ShieldCheck,
   Share2,
   Heart,
-  Gauge,
-  Fuel,
-  Settings2,
   CheckCircle2,
-  MapPin,
   Clock,
   Car,
+  Compass,
+  X,
 } from "lucide-react";
 import { formatCurrency, formatKm } from "@/lib/utils";
 import { calculateEmi } from "@/lib/finance";
@@ -64,7 +61,7 @@ export function VehicleDetailClient({ vehicle }: VehicleDetailClientProps) {
           customerEmail: "callback@northstarmotors.in",
           vehicleId: vehicle.id,
           source: "CALLBACK_REQUEST",
-          notesSummary: `Customer requested immediate phone callback for ${vehicle.year} ${vehicle.make} ${vehicle.model}`,
+          notesSummary: `Customer requested immediate callback for ${vehicle.year} ${vehicle.make} ${vehicle.model}`,
         }),
       });
       setCallbackSuccess(true);
@@ -78,23 +75,23 @@ export function VehicleDetailClient({ vehicle }: VehicleDetailClientProps) {
   }
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-10">
       {/* Top Header: Title, Price & Quick Actions */}
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-slate-800 pb-8">
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-[#182133] pb-8">
         <div>
           <div className="flex items-center gap-2 mb-2">
             <span
-              className={`px-3 py-1 rounded-md text-xs font-bold ${
+              className={`px-2.5 py-1 rounded text-xs font-bold tracking-wide uppercase ${
                 vehicle.condition === "NEW"
-                  ? "bg-emerald-600/90 text-white"
+                  ? "bg-emerald-600 text-white"
                   : vehicle.condition === "CERTIFIED_PRE_OWNED"
-                  ? "bg-purple-600/90 text-white"
+                  ? "bg-[#182338] text-brand-300 border border-[#2b3a59]"
                   : "bg-slate-800 text-slate-200"
               }`}
             >
               {vehicle.condition === "CERTIFIED_PRE_OWNED" ? "Northstar Certified Pre-Owned" : vehicle.condition}
             </span>
-            <span className="text-xs text-slate-400">Stock #{vehicle.stockNumber || "NM-2024"}</span>
+            <span className="text-xs text-slate-400 font-medium">Stock #{vehicle.stockNumber || "NM-2024"}</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
@@ -107,36 +104,36 @@ export function VehicleDetailClient({ vehicle }: VehicleDetailClientProps) {
         <div className="flex flex-col sm:items-end gap-3">
           <div>
             <div className="flex items-baseline gap-3">
-              <span className="text-3xl sm:text-4xl font-black text-emerald-400 tracking-tight">
+              <span className="text-3xl sm:text-4xl font-black text-white tracking-tight">
                 {formatCurrency(vehicle.price)}
               </span>
               {vehicle.originalPrice && vehicle.originalPrice > vehicle.price && (
-                <span className="text-base text-slate-500 line-through">
+                <span className="text-sm text-slate-400 line-through">
                   {formatCurrency(vehicle.originalPrice)}
                 </span>
               )}
             </div>
-            <p className="text-xs text-slate-400 sm:text-right mt-0.5">Ex-Showroom Price • Dehradun</p>
+            <p className="text-xs text-slate-400 sm:text-right mt-0.5">Ex-Showroom Price · Dehradun</p>
           </div>
 
           <div className="flex items-center gap-2">
             <button
               onClick={() => setIsSaved(!isSaved)}
-              className={`p-2.5 rounded-xl border transition-colors flex items-center gap-1.5 text-xs font-semibold ${
+              className={`p-2.5 rounded-lg border transition-colors flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider ${
                 isSaved
                   ? "bg-rose-500/10 border-rose-500/30 text-rose-400"
-                  : "bg-slate-900 border-slate-800 text-slate-300 hover:text-white"
+                  : "bg-[#0e1420] border-[#1e273a] text-slate-300 hover:text-white"
               }`}
             >
-              <Heart className={`w-4 h-4 ${isSaved ? "fill-rose-500" : ""}`} />
+              <Heart className={`w-3.5 h-3.5 ${isSaved ? "fill-rose-500" : ""}`} />
               <span>{isSaved ? "Saved" : "Save"}</span>
             </button>
 
             <Link
               href={`/compare?add=${vehicle.id}`}
-              className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white transition-colors flex items-center gap-1.5 text-xs font-semibold"
+              className="p-2.5 rounded-lg bg-[#0e1420] border border-[#1e273a] text-slate-300 hover:text-white transition-colors flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider"
             >
-              <Layers className="w-4 h-4" />
+              <Layers className="w-3.5 h-3.5" />
               <span>Compare</span>
             </Link>
 
@@ -152,10 +149,10 @@ export function VehicleDetailClient({ vehicle }: VehicleDetailClientProps) {
                   alert("Vehicle link copied to clipboard!");
                 }
               }}
-              className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white transition-colors text-xs font-semibold"
+              className="p-2.5 rounded-lg bg-[#0e1420] border border-[#1e273a] text-slate-300 hover:text-white transition-colors text-xs font-semibold"
               title="Share Vehicle"
             >
-              <Share2 className="w-4 h-4" />
+              <Share2 className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
@@ -167,7 +164,7 @@ export function VehicleDetailClient({ vehicle }: VehicleDetailClientProps) {
         <div className="lg:col-span-8 space-y-10">
           {/* Main Photo Gallery */}
           <div className="space-y-4">
-            <div className="relative h-96 sm:h-[480px] w-full rounded-3xl overflow-hidden bg-slate-900 border border-slate-800 shadow-2xl">
+            <div className="relative h-96 sm:h-[480px] w-full rounded-2xl overflow-hidden bg-[#111622] border border-[#1b2334] shadow-xl">
               <Image
                 src={images[selectedImageIndex]?.url}
                 alt={images[selectedImageIndex]?.caption || vehicle.model}
@@ -176,7 +173,7 @@ export function VehicleDetailClient({ vehicle }: VehicleDetailClientProps) {
                 className="object-cover"
                 sizes="(max-width: 1200px) 100vw, 800px"
               />
-              <div className="absolute bottom-4 left-4 bg-black/70 backdrop-blur-md px-3 py-1.5 rounded-lg text-xs font-medium text-slate-200">
+              <div className="absolute bottom-4 left-4 bg-[#06080d]/90 border border-[#1e273a] px-3 py-1.5 rounded-md text-xs font-medium text-slate-300">
                 {images[selectedImageIndex]?.caption || `Photo ${selectedImageIndex + 1} of ${images.length}`}
               </div>
             </div>
@@ -188,8 +185,8 @@ export function VehicleDetailClient({ vehicle }: VehicleDetailClientProps) {
                   <button
                     key={img.url + idx}
                     onClick={() => setSelectedImageIndex(idx)}
-                    className={`relative w-24 h-16 rounded-xl overflow-hidden shrink-0 border-2 transition-all ${
-                      selectedImageIndex === idx ? "border-brand-500 scale-105" : "border-slate-800 opacity-60 hover:opacity-100"
+                    className={`relative w-24 h-16 rounded-lg overflow-hidden shrink-0 border-2 transition-all ${
+                      selectedImageIndex === idx ? "border-brand-500" : "border-[#1e273a] opacity-60 hover:opacity-100"
                     }`}
                   >
                     <Image src={img.url} alt="thumbnail" fill className="object-cover" sizes="100px" />
@@ -200,100 +197,100 @@ export function VehicleDetailClient({ vehicle }: VehicleDetailClientProps) {
           </div>
 
           {/* Key Specifications Grid */}
-          <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-800 space-y-6">
-            <h3 className="text-xl font-bold text-white flex items-center gap-2">
+          <div className="bg-[#090d15] border border-[#1b2334] rounded-2xl p-6 sm:p-8 space-y-6">
+            <h2 className="text-xl font-bold text-white flex items-center gap-2">
               <Car className="w-5 h-5 text-brand-400" />
               <span>Core Specifications</span>
-            </h3>
+            </h2>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
-              <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-1">
-                <span className="text-slate-400">Mileage / Odometer</span>
+              <div className="bg-[#0e1420] p-4 rounded-xl border border-[#1c2436] space-y-1">
+                <span className="text-slate-400 uppercase tracking-wider text-[10px]">Mileage</span>
                 <p className="text-white font-bold text-sm">
                   {vehicle.mileageKm ? formatKm(vehicle.mileageKm) : "Brand New (0 km)"}
                 </p>
               </div>
 
-              <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-1">
-                <span className="text-slate-400">Transmission</span>
+              <div className="bg-[#0e1420] p-4 rounded-xl border border-[#1c2436] space-y-1">
+                <span className="text-slate-400 uppercase tracking-wider text-[10px]">Transmission</span>
                 <p className="text-white font-bold text-sm">{vehicle.transmission}</p>
               </div>
 
-              <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-1">
-                <span className="text-slate-400">Fuel Type</span>
+              <div className="bg-[#0e1420] p-4 rounded-xl border border-[#1c2436] space-y-1">
+                <span className="text-slate-400 uppercase tracking-wider text-[10px]">Fuel Type</span>
                 <p className="text-white font-bold text-sm">{vehicle.fuelType}</p>
               </div>
 
-              <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-1">
-                <span className="text-slate-400">Engine / Power</span>
+              <div className="bg-[#0e1420] p-4 rounded-xl border border-[#1c2436] space-y-1">
+                <span className="text-slate-400 uppercase tracking-wider text-[10px]">Engine / Power</span>
                 <p className="text-white font-bold text-sm">
                   {vehicle.powerBhp} BHP {vehicle.engineCapacityCc ? `(${vehicle.engineCapacityCc} cc)` : ""}
                 </p>
               </div>
 
-              <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-1">
-                <span className="text-slate-400">Torque</span>
+              <div className="bg-[#0e1420] p-4 rounded-xl border border-[#1c2436] space-y-1">
+                <span className="text-slate-400 uppercase tracking-wider text-[10px]">Torque</span>
                 <p className="text-white font-bold text-sm">{vehicle.torqueNm} Nm</p>
               </div>
 
-              <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-1">
-                <span className="text-slate-400">Fuel Economy / Range</span>
+              <div className="bg-[#0e1420] p-4 rounded-xl border border-[#1c2436] space-y-1">
+                <span className="text-slate-400 uppercase tracking-wider text-[10px]">Fuel Economy</span>
                 <p className="text-white font-bold text-sm">
-                  {vehicle.fuelEfficiencyKmpl ? `${vehicle.fuelEfficiencyKmpl} km/l` : "Electric Range Certified"}
+                  {vehicle.fuelEfficiencyKmpl ? `${vehicle.fuelEfficiencyKmpl} km/l` : "Electric Certified"}
                 </p>
               </div>
 
-              <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-1">
-                <span className="text-slate-400">Seating Capacity</span>
+              <div className="bg-[#0e1420] p-4 rounded-xl border border-[#1c2436] space-y-1">
+                <span className="text-slate-400 uppercase tracking-wider text-[10px]">Seating</span>
                 <p className="text-white font-bold text-sm">{vehicle.seatingCapacity} Passengers</p>
               </div>
 
-              <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-1">
-                <span className="text-slate-400">Drivetrain</span>
+              <div className="bg-[#0e1420] p-4 rounded-xl border border-[#1c2436] space-y-1">
+                <span className="text-slate-400 uppercase tracking-wider text-[10px]">Drivetrain</span>
                 <p className="text-white font-bold text-sm">{vehicle.drivetrain || "Front-Wheel Drive"}</p>
               </div>
             </div>
 
             {/* Colors & Ownership */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-slate-800/80 text-xs text-slate-300">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-[#182133] text-xs text-slate-300">
               <div>
-                <span className="text-slate-500">Exterior Color:</span>{" "}
+                <span className="text-slate-400">Exterior Color:</span>{" "}
                 <span className="font-semibold text-white">{vehicle.exteriorColor}</span>
               </div>
               <div>
-                <span className="text-slate-500">Interior Theme:</span>{" "}
+                <span className="text-slate-400">Interior Theme:</span>{" "}
                 <span className="font-semibold text-white">{vehicle.interiorColor || "Premium Dual Tone"}</span>
               </div>
               <div>
-                <span className="text-slate-500">Ownership:</span>{" "}
+                <span className="text-slate-400">Ownership:</span>{" "}
                 <span className="font-semibold text-white">{vehicle.ownershipHistory || "1st Owner"}</span>
               </div>
             </div>
           </div>
 
           {/* Description & Overview */}
-          <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-800 space-y-4">
-            <h3 className="text-xl font-bold text-white">Vehicle Overview</h3>
+          <div className="bg-[#090d15] border border-[#1b2334] rounded-2xl p-6 sm:p-8 space-y-4">
+            <h2 className="text-xl font-bold text-white">Vehicle Overview</h2>
             <p className="text-slate-300 text-sm leading-relaxed whitespace-pre-line">
               {vehicle.description}
             </p>
             {vehicle.warranty && (
-              <div className="pt-3 border-t border-slate-800 flex items-center gap-2 text-xs text-brand-300">
+              <div className="pt-3 border-t border-[#182133] flex items-center gap-2 text-xs text-slate-300">
                 <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>Warranty: {vehicle.warranty}</span>
               </div>
             )}
           </div>
 
-          {/* Categorized Features */}
+          {/* Installed Features */}
           {vehicle.features && vehicle.features.length > 0 && (
-            <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-800 space-y-4">
-              <h3 className="text-xl font-bold text-white">Installed Features & Equipment</h3>
+            <div className="bg-[#090d15] border border-[#1b2334] rounded-2xl p-6 sm:p-8 space-y-4">
+              <h2 className="text-xl font-bold text-white">Installed Equipment</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {vehicle.features.map((feat: any) => (
                   <div
                     key={feat.id || feat.name}
-                    className="flex items-center gap-2 p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-xs text-slate-200"
+                    className="flex items-center gap-2 p-3 rounded-xl bg-[#0e1420] border border-[#1c2436] text-xs text-slate-200"
                   >
                     <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                     <span>{feat.name}</span>
@@ -303,17 +300,17 @@ export function VehicleDetailClient({ vehicle }: VehicleDetailClientProps) {
             </div>
           )}
 
-          {/* Interactive Vehicle-Specific EMI Calculator */}
-          <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-800 space-y-6">
+          {/* Interactive EMI Calculator */}
+          <div className="bg-[#090d15] border border-[#1b2334] rounded-2xl p-6 sm:p-8 space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                <h2 className="text-xl font-bold text-white flex items-center gap-2">
                   <Calculator className="w-5 h-5 text-amber-400" />
                   <span>Financing & EMI Breakdown</span>
-                </h3>
-                <p className="text-xs text-slate-400 mt-0.5">Calculated in real-time with deterministic reducing balance formula</p>
+                </h2>
+                <p className="text-xs text-slate-400 mt-0.5">Reducing balance calculation at {interestRate}% p.a.</p>
               </div>
-              <span className="text-2xl font-black text-amber-400">
+              <span className="text-2xl font-black text-white">
                 {formatCurrency(emiResult.monthlyEmi)} / mo
               </span>
             </div>
@@ -323,7 +320,7 @@ export function VehicleDetailClient({ vehicle }: VehicleDetailClientProps) {
               <div>
                 <div className="flex justify-between text-xs text-slate-300 mb-1">
                   <span>Down Payment ({downPaymentPercent}%): {formatCurrency(downPaymentAmount)}</span>
-                  <span>Loan Principal: {formatCurrency(emiResult.principalLoanAmount)}</span>
+                  <span>Principal Loan: {formatCurrency(emiResult.principalLoanAmount)}</span>
                 </div>
                 <input
                   type="range"
@@ -338,7 +335,7 @@ export function VehicleDetailClient({ vehicle }: VehicleDetailClientProps) {
 
               <div>
                 <div className="flex justify-between text-xs text-slate-300 mb-1">
-                  <span>Loan Duration: {tenureYears} Years ({tenureYears * 12} Months)</span>
+                  <span>Tenure: {tenureYears} Years ({tenureYears * 12} Months)</span>
                   <span>Interest Rate: {interestRate}% p.a.</span>
                 </div>
                 <input
@@ -348,12 +345,12 @@ export function VehicleDetailClient({ vehicle }: VehicleDetailClientProps) {
                   step="1"
                   value={tenureYears}
                   onChange={(e) => setTenureYears(Number(e.target.value))}
-                  className="w-full accent-amber-500"
+                  className="w-full accent-brand-500"
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-3 p-4 rounded-xl bg-slate-900/80 border border-slate-800 text-xs">
+            <div className="grid grid-cols-3 gap-3 p-4 rounded-xl bg-[#0e1420] border border-[#1c2436] text-xs">
               <div>
                 <span className="text-slate-400">Total Interest</span>
                 <p className="font-bold text-slate-200 mt-0.5">{formatCurrency(emiResult.totalInterest)}</p>
@@ -364,13 +361,13 @@ export function VehicleDetailClient({ vehicle }: VehicleDetailClientProps) {
               </div>
               <div>
                 <span className="text-slate-400">Processing Fee</span>
-                <p className="font-bold text-emerald-400 mt-0.5">Zero (Limited Offer)</p>
+                <p className="font-bold text-emerald-400 mt-0.5">Zero (Showroom Offer)</p>
               </div>
             </div>
 
             <Link
               href={`/finance?price=${vehicle.price}&vehicleId=${vehicle.id}`}
-              className="block w-full text-center py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-colors"
+              className="block w-full text-center py-3 rounded-lg bg-[#111724] hover:bg-[#182133] text-white font-semibold text-xs uppercase tracking-wider border border-[#243048] transition-colors"
             >
               Apply for Pre-Approved Financing on this Car
             </Link>
@@ -379,10 +376,10 @@ export function VehicleDetailClient({ vehicle }: VehicleDetailClientProps) {
 
         {/* Right Column: Sticky Action & Test Drive Card */}
         <div className="lg:col-span-4 space-y-6">
-          <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-800 sticky top-28 space-y-6 shadow-2xl">
+          <div className="bg-[#090d15] border border-[#1b2334] rounded-2xl p-6 sm:p-8 sticky top-28 space-y-6 shadow-xl">
             <div>
-              <span className="text-xs font-bold text-brand-400 uppercase tracking-wider">Showroom Availability</span>
-              <h3 className="text-xl font-bold text-white mt-1">Ready for Immediate Delivery</h3>
+              <span className="text-xs font-bold text-brand-400 uppercase tracking-wider">Showroom Status</span>
+              <h2 className="text-xl font-bold text-white mt-1">Ready for Immediate Delivery</h2>
               <p className="text-xs text-slate-400 mt-1">
                 Located at Northstar Motors, Rajpur Road, Dehradun.
               </p>
@@ -391,113 +388,125 @@ export function VehicleDetailClient({ vehicle }: VehicleDetailClientProps) {
             <div className="space-y-3 pt-2">
               <Link
                 href={`/test-drive?vehicleId=${vehicle.id}`}
-                className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-sm shadow-xl shadow-brand-500/25 transition-all"
+                className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs uppercase tracking-wider transition-colors shadow-lg shadow-brand-900/30"
               >
                 <CalendarCheck className="w-4 h-4" />
-                <span>Book Doorstep Test Drive</span>
+                <span>Book Test Drive</span>
               </Link>
 
               <button
                 onClick={() => setShowCallbackModal(true)}
-                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl glass-panel hover:bg-slate-900 text-slate-200 font-semibold text-xs border border-slate-700 transition-colors"
+                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-lg bg-[#0e1420] hover:bg-[#161f30] text-slate-200 hover:text-white font-semibold text-xs uppercase tracking-wider border border-[#1e273a] transition-colors"
               >
-                <PhoneCall className="w-4 h-4 text-emerald-400" />
+                <Phone className="w-3.5 h-3.5 text-emerald-400" />
                 <span>Request Immediate Callback</span>
               </button>
 
               <Link
                 href={`/trade-in?targetVehicleId=${vehicle.id}`}
-                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl glass-panel hover:bg-slate-900 text-slate-200 font-semibold text-xs border border-slate-700 transition-colors"
+                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-lg bg-[#0e1420] hover:bg-[#161f30] text-slate-200 hover:text-white font-semibold text-xs uppercase tracking-wider border border-[#1e273a] transition-colors"
               >
                 <span>Trade In Your Current Car</span>
               </Link>
             </div>
 
-            {/* Quick Consultation Banner */}
-            <div className="p-4 rounded-2xl bg-gradient-to-br from-indigo-950/60 to-slate-900 border border-indigo-500/30 space-y-2">
-              <div className="flex items-center gap-2 text-indigo-300 font-bold text-xs">
-                <Sparkles className="w-4 h-4 text-amber-300" />
-                <span>Have questions about this vehicle?</span>
+            {/* Quick Consultation Advisor */}
+            <div className="p-4 rounded-xl bg-[#0e1420] border border-[#1c2436] space-y-2">
+              <div className="flex items-center gap-2 text-slate-200 font-bold text-xs uppercase tracking-wider">
+                <Compass className="w-4 h-4 text-brand-400" />
+                <span>Vehicle Consultation</span>
               </div>
               <p className="text-xs text-slate-400">
-                Ask our AI Car Concierge why this model fits your needs or how it compares with other cars.
+                Compare this model against rival vehicles, verify hill-climbing performance, or check running costs.
               </p>
               <Link
                 href={`/?askAi=Tell me about the ${encodeURIComponent(vehicle.make + " " + vehicle.model)}`}
                 className="inline-block text-xs font-semibold text-brand-400 hover:text-brand-300 pt-1"
               >
-                Chat with Northstar AI →
+                Consult Digital Concierge →
               </Link>
             </div>
 
             {/* Showroom Perks */}
-            <div className="border-t border-slate-800/80 pt-4 space-y-2 text-xs text-slate-400">
+            <div className="border-t border-[#182133] pt-4 space-y-2 text-xs text-slate-400">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                <span>150-Point Certified Inspection Certificate</span>
+                <span>150-Point Inspection Certificate Included</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Clean Title Guarantee & RC Transfer Assistance</span>
+                <span>Clean Title Guarantee & RC Transfer Service</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                <span>7-Day Vehicle Exchange Promise</span>
+                <span>7-Day Showroom Exchange Assurance</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Callback Request Modal */}
+      {/* Immediate Callback Modal */}
       {showCallbackModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
-          <div className="w-full max-w-md bg-slate-900 border border-slate-700 rounded-2xl p-6 shadow-2xl relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="w-full max-w-md bg-[#090d15] border border-[#1b2334] rounded-xl p-6 shadow-2xl relative">
+            <button
+              onClick={() => setShowCallbackModal(false)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-white"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
             {callbackSuccess ? (
-              <div className="py-6 text-center space-y-2">
+              <div className="py-8 text-center space-y-3">
                 <CheckCircle2 className="w-10 h-10 text-emerald-400 mx-auto" />
-                <h4 className="text-lg font-bold text-white">Callback Request Confirmed</h4>
-                <p className="text-xs text-slate-400">An advisor will call you within 15 minutes.</p>
+                <h4 className="text-lg font-bold text-white">Callback Scheduled</h4>
+                <p className="text-xs text-slate-300">
+                  A sales consultant from our Dehradun showroom will contact you shortly.
+                </p>
               </div>
             ) : (
-              <form onSubmit={handleCallbackSubmit} className="space-y-4">
-                <h4 className="text-lg font-bold text-white">Request Callback for {vehicle.model}</h4>
+              <div className="space-y-4">
                 <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Your Name</label>
-                  <input
-                    type="text"
-                    required
-                    value={callbackForm.name}
-                    onChange={(e) => setCallbackForm({ ...callbackForm, name: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
-                  />
+                  <span className="text-xs font-bold text-brand-400 uppercase tracking-wider">Direct Sales Desk</span>
+                  <h3 className="text-lg font-bold text-white mt-1">Request Callback</h3>
+                  <p className="text-xs text-slate-400">
+                    For {vehicle.year} {vehicle.make} {vehicle.model}
+                  </p>
                 </div>
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Phone Number</label>
-                  <input
-                    type="tel"
-                    required
-                    value={callbackForm.phone}
-                    onChange={(e) => setCallbackForm({ ...callbackForm, phone: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
-                  />
-                </div>
-                <div className="flex items-center justify-end gap-2 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => setShowCallbackModal(false)}
-                    className="px-4 py-2 rounded-lg text-xs text-slate-400 hover:text-white"
-                  >
-                    Cancel
-                  </button>
+
+                <form onSubmit={handleCallbackSubmit} className="space-y-3">
+                  <div>
+                    <label className="block text-xs font-medium text-slate-300 mb-1">Your Full Name</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Rahul Sharma"
+                      value={callbackForm.name}
+                      onChange={(e) => setCallbackForm({ ...callbackForm, name: e.target.value })}
+                      className="w-full bg-[#06080d] border border-[#1b2334] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-300 mb-1">Contact Number</label>
+                    <input
+                      type="tel"
+                      required
+                      placeholder="+91 98970 12345"
+                      value={callbackForm.phone}
+                      onChange={(e) => setCallbackForm({ ...callbackForm, phone: e.target.value })}
+                      className="w-full bg-[#06080d] border border-[#1b2334] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500"
+                    />
+                  </div>
+
                   <button
                     type="submit"
-                    className="px-5 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs"
+                    className="w-full mt-2 py-3 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs uppercase tracking-wider transition-colors"
                   >
-                    Submit Request
+                    Confirm Callback Request
                   </button>
-                </div>
-              </form>
+                </form>
+              </div>
             )}
           </div>
         </div>

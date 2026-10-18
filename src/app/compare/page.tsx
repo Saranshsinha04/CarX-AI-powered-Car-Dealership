@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getVehicles, getVehiclesForComparison } from "@/lib/db";
 import { formatCurrency, formatKm } from "@/lib/utils";
-import { Layers, ArrowRight, Check, X, CalendarCheck } from "lucide-react";
+import { CalendarCheck } from "lucide-react";
 
 interface ComparePageProps {
   searchParams: {
@@ -24,7 +24,6 @@ export default async function ComparePage({ searchParams }: ComparePageProps) {
   } else if (searchParams.add) {
     vehicleIds = [searchParams.add, allVehicles[0]?.id].filter(Boolean);
   } else {
-    // Default comparison between two popular SUVs: Creta & Thar or XUV700
     vehicleIds = [allVehicles[0]?.id, allVehicles[1]?.id].filter(Boolean);
   }
 
@@ -34,50 +33,50 @@ export default async function ComparePage({ searchParams }: ComparePageProps) {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       {/* Header */}
       <div>
-        <div className="flex items-center gap-2 text-xs text-slate-400 mb-2">
-          <Link href="/" className="hover:text-white">Home</Link>
+        <div className="flex items-center gap-2 text-xs text-slate-400 mb-2 uppercase tracking-wider">
+          <Link href="/" className="hover:text-white transition-colors">Showroom</Link>
           <span>/</span>
-          <span className="text-brand-400">Compare</span>
+          <span className="text-white font-semibold">Compare</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-white">Compare Vehicles</h1>
+        <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight">Compare Vehicles</h1>
         <p className="text-slate-400 text-sm mt-1">
           Detailed side-by-side technical evaluation across powertrain, dimensions, comfort, and real pricing.
         </p>
       </div>
 
       {/* Comparison Selector / Quick Switcher */}
-      <div className="glass-panel rounded-2xl p-4 border border-slate-800 flex flex-wrap items-center gap-3">
-        <span className="text-xs font-semibold text-slate-300">Quick Compare:</span>
+      <div className="bg-[#090d15] border border-[#1b2334] rounded-xl p-4 flex flex-wrap items-center gap-3">
+        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Quick Compare:</span>
         <Link
           href={`/compare?ids=${allVehicles[0]?.id},${allVehicles[1]?.id}`}
-          className="text-xs px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800"
+          className="text-xs px-3 py-1.5 rounded-md bg-[#0e1420] hover:bg-[#161f30] text-slate-200 border border-[#1e273a] transition-colors"
         >
           Hyundai Creta vs Mahindra Thar
         </Link>
         <Link
           href={`/compare?ids=${allVehicles[2]?.id},${allVehicles[3]?.id}`}
-          className="text-xs px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800"
+          className="text-xs px-3 py-1.5 rounded-md bg-[#0e1420] hover:bg-[#161f30] text-slate-200 border border-[#1e273a] transition-colors"
         >
           Scorpio-N vs XUV700
         </Link>
         <Link
           href={`/compare?ids=${allVehicles[4]?.id},${allVehicles[8]?.id}`}
-          className="text-xs px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800"
+          className="text-xs px-3 py-1.5 rounded-md bg-[#0e1420] hover:bg-[#161f30] text-slate-200 border border-[#1e273a] transition-colors"
         >
           Tata Nexon.ev vs Honda City Hybrid
         </Link>
       </div>
 
       {/* Comparison Matrix Table */}
-      <div className="glass-panel rounded-3xl border border-slate-800 overflow-x-auto shadow-2xl">
-        <table className="w-full text-left text-sm text-slate-200 min-w-[700px]">
+      <div className="bg-[#090d15] border border-[#1b2334] rounded-xl overflow-x-auto shadow-xl">
+        <table className="w-full text-left text-xs sm:text-sm text-slate-200 min-w-[700px]">
           <thead>
-            <tr className="border-b border-slate-800 bg-slate-950/60">
-              <th className="p-5 text-slate-400 font-bold uppercase text-xs w-1/4">Feature / Metric</th>
+            <tr className="border-b border-[#182133] bg-[#0b0f17]">
+              <th className="p-5 text-slate-400 font-bold uppercase text-xs w-1/4">Specification</th>
               {comparedVehicles.map((car: any) => (
                 <th key={car.id} className="p-5 w-1/3 align-top">
                   <div className="space-y-3">
-                    <div className="relative h-36 w-full rounded-xl overflow-hidden bg-slate-900">
+                    <div className="relative h-40 w-full rounded-lg overflow-hidden bg-[#111622]">
                       <Image
                         src={car.images?.[0]?.url || "https://images.unsplash.com/photo-1549399542-7e3f8b79c341"}
                         alt={car.model}
@@ -86,115 +85,111 @@ export default async function ComparePage({ searchParams }: ComparePageProps) {
                       />
                     </div>
                     <div>
-                      <h3 className="font-extrabold text-base text-white">
+                      <h2 className="font-bold text-base text-white">
                         {car.year} {car.make} {car.model}
-                      </h3>
+                      </h2>
                       <p className="text-xs text-slate-400">{car.trim}</p>
-                      <p className="text-lg font-black text-emerald-400 mt-1">
+                      <p className="text-xl font-black text-white mt-1">
                         {formatCurrency(car.price)}
                       </p>
                     </div>
                     <Link
                       href={`/test-drive?vehicleId=${car.id}`}
-                      className="block text-center py-2 px-3 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs"
+                      className="block text-center py-2 px-3 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs uppercase tracking-wider transition-colors"
                     >
-                      Book Test Drive
+                      Test Drive
                     </Link>
                   </div>
                 </th>
               ))}
             </tr>
           </thead>
-
-          <tbody className="divide-y divide-slate-800/80 text-xs">
-            {/* Powertrain */}
-            <tr className="bg-slate-900/40">
-              <td colSpan={comparedVehicles.length + 1} className="p-3 text-xs font-bold text-brand-400 uppercase tracking-wider">
-                Powertrain & Performance
-              </td>
-            </tr>
-            <tr>
-              <td className="p-4 font-semibold text-slate-400">Power Output</td>
-              {comparedVehicles.map((car: any) => (
-                <td key={car.id} className="p-4 font-bold text-white">{car.powerBhp} BHP</td>
-              ))}
-            </tr>
-            <tr>
-              <td className="p-4 font-semibold text-slate-400">Peak Torque</td>
-              {comparedVehicles.map((car: any) => (
-                <td key={car.id} className="p-4 font-bold text-white">{car.torqueNm} Nm</td>
-              ))}
-            </tr>
-            <tr>
-              <td className="p-4 font-semibold text-slate-400">Transmission</td>
-              {comparedVehicles.map((car: any) => (
-                <td key={car.id} className="p-4 text-slate-200">{car.transmission}</td>
-              ))}
-            </tr>
-            <tr>
-              <td className="p-4 font-semibold text-slate-400">Fuel Type</td>
-              {comparedVehicles.map((car: any) => (
-                <td key={car.id} className="p-4 text-slate-200">{car.fuelType}</td>
-              ))}
-            </tr>
-            <tr>
-              <td className="p-4 font-semibold text-slate-400">Fuel Economy / Range</td>
-              {comparedVehicles.map((car: any) => (
-                <td key={car.id} className="p-4 font-semibold text-emerald-400">
-                  {car.fuelEfficiencyKmpl ? `${car.fuelEfficiencyKmpl} km/l` : "EV Certified Range"}
+          <tbody className="divide-y divide-[#182133] text-xs">
+            <tr className="hover:bg-[#0e1420]">
+              <td className="p-4 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">Condition</td>
+              {comparedVehicles.map((c: any) => (
+                <td key={c.id} className="p-4 font-semibold text-white">
+                  {c.condition === "CERTIFIED_PRE_OWNED" ? "Certified Pre-Owned" : c.condition}
                 </td>
               ))}
             </tr>
-            <tr>
-              <td className="p-4 font-semibold text-slate-400">Drivetrain</td>
-              {comparedVehicles.map((car: any) => (
-                <td key={car.id} className="p-4 text-slate-200">{car.drivetrain || "FWD"}</td>
+            <tr className="hover:bg-[#0e1420]">
+              <td className="p-4 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">Body Type</td>
+              {comparedVehicles.map((c: any) => (
+                <td key={c.id} className="p-4 text-slate-200">{c.bodyType}</td>
               ))}
             </tr>
-
-            {/* Practicality & Dimensions */}
-            <tr className="bg-slate-900/40">
-              <td colSpan={comparedVehicles.length + 1} className="p-3 text-xs font-bold text-brand-400 uppercase tracking-wider">
-                Dimensions & Practicality
-              </td>
-            </tr>
-            <tr>
-              <td className="p-4 font-semibold text-slate-400">Seating Capacity</td>
-              {comparedVehicles.map((car: any) => (
-                <td key={car.id} className="p-4 font-bold text-white">{car.seatingCapacity} Seater</td>
-              ))}
-            </tr>
-            <tr>
-              <td className="p-4 font-semibold text-slate-400">Body Type</td>
-              {comparedVehicles.map((car: any) => (
-                <td key={car.id} className="p-4 text-slate-200">{car.bodyType}</td>
-              ))}
-            </tr>
-            <tr>
-              <td className="p-4 font-semibold text-slate-400">Odometer / Condition</td>
-              {comparedVehicles.map((car: any) => (
-                <td key={car.id} className="p-4 text-slate-200">
-                  {car.mileageKm ? formatKm(car.mileageKm) : "Brand New (0 km)"} • {car.condition}
+            <tr className="hover:bg-[#0e1420]">
+              <td className="p-4 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">Mileage (Odometer)</td>
+              {comparedVehicles.map((c: any) => (
+                <td key={c.id} className="p-4 text-slate-200 font-medium">
+                  {c.mileageKm ? formatKm(c.mileageKm) : "Brand New (0 km)"}
                 </td>
               ))}
             </tr>
-
-            {/* Ownership & Warranty */}
-            <tr className="bg-slate-900/40">
-              <td colSpan={comparedVehicles.length + 1} className="p-3 text-xs font-bold text-brand-400 uppercase tracking-wider">
-                Warranty & Ownership
-              </td>
-            </tr>
-            <tr>
-              <td className="p-4 font-semibold text-slate-400">Warranty Coverage</td>
-              {comparedVehicles.map((car: any) => (
-                <td key={car.id} className="p-4 text-slate-300">{car.warranty || "Standard 1-Year Coverage"}</td>
+            <tr className="hover:bg-[#0e1420]">
+              <td className="p-4 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">Fuel Type</td>
+              {comparedVehicles.map((c: any) => (
+                <td key={c.id} className="p-4 text-slate-200">{c.fuelType}</td>
               ))}
             </tr>
-            <tr>
-              <td className="p-4 font-semibold text-slate-400">Ownership History</td>
-              {comparedVehicles.map((car: any) => (
-                <td key={car.id} className="p-4 text-slate-300">{car.ownershipHistory || "1st Owner"}</td>
+            <tr className="hover:bg-[#0e1420]">
+              <td className="p-4 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">Transmission</td>
+              {comparedVehicles.map((c: any) => (
+                <td key={c.id} className="p-4 text-slate-200">{c.transmission}</td>
+              ))}
+            </tr>
+            <tr className="hover:bg-[#0e1420]">
+              <td className="p-4 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">Engine Output</td>
+              {comparedVehicles.map((c: any) => (
+                <td key={c.id} className="p-4 text-slate-200 font-medium">
+                  {c.powerBhp} BHP {c.engineCapacityCc ? `(${c.engineCapacityCc} cc)` : ""}
+                </td>
+              ))}
+            </tr>
+            <tr className="hover:bg-[#0e1420]">
+              <td className="p-4 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">Torque</td>
+              {comparedVehicles.map((c: any) => (
+                <td key={c.id} className="p-4 text-slate-200">{c.torqueNm} Nm</td>
+              ))}
+            </tr>
+            <tr className="hover:bg-[#0e1420]">
+              <td className="p-4 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">Fuel Economy / Range</td>
+              {comparedVehicles.map((c: any) => (
+                <td key={c.id} className="p-4 text-slate-200">
+                  {c.fuelEfficiencyKmpl ? `${c.fuelEfficiencyKmpl} km/l` : "Electric Certified"}
+                </td>
+              ))}
+            </tr>
+            <tr className="hover:bg-[#0e1420]">
+              <td className="p-4 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">Drivetrain</td>
+              {comparedVehicles.map((c: any) => (
+                <td key={c.id} className="p-4 text-slate-200">{c.drivetrain || "Front-Wheel Drive"}</td>
+              ))}
+            </tr>
+            <tr className="hover:bg-[#0e1420]">
+              <td className="p-4 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">Seating Capacity</td>
+              {comparedVehicles.map((c: any) => (
+                <td key={c.id} className="p-4 text-slate-200">{c.seatingCapacity} Passengers</td>
+              ))}
+            </tr>
+            <tr className="hover:bg-[#0e1420]">
+              <td className="p-4 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">Warranty</td>
+              {comparedVehicles.map((c: any) => (
+                <td key={c.id} className="p-4 text-slate-200">{c.warranty || "Standard 1-Year"}</td>
+              ))}
+            </tr>
+            <tr className="hover:bg-[#0e1420]">
+              <td className="p-4 font-semibold text-slate-400 uppercase tracking-wider text-[11px]">Action</td>
+              {comparedVehicles.map((c: any) => (
+                <td key={c.id} className="p-4">
+                  <Link
+                    href={`/inventory/${c.id}`}
+                    className="inline-block py-1.5 px-3 rounded-md bg-[#111724] hover:bg-[#182133] text-white font-semibold text-xs border border-[#243048] transition-colors uppercase tracking-wider"
+                  >
+                    View Full Details
+                  </Link>
+                </td>
               ))}
             </tr>
           </tbody>
