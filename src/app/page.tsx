@@ -17,6 +17,7 @@ import {
   Car,
   Clock,
   Phone,
+  Disc,
 } from "lucide-react";
 import { getVehicles, getDealership } from "@/lib/db";
 import { formatCurrency } from "@/lib/utils";
@@ -385,6 +386,56 @@ export default async function HomePage() {
               <span>Value Your Vehicle</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 5B. BESPOKE FORGED ALLOY WHEEL ARCHIVE — JULIAN VANCE */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-[#090d15] border border-[#1b2334] rounded-2xl p-8 sm:p-12 relative overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <div className="lg:col-span-7 space-y-4">
+              <div className="inline-flex items-center gap-2 text-xs font-semibold text-brand-400 uppercase tracking-widest">
+                <Disc className="w-4 h-4 text-brand-400" />
+                <span>Bespoke Engineering Atelier</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
+                Julian Vance — Forged in Pure Alloy Motion
+              </h2>
+              <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
+                Metallurgical studies in unsprung mass, machined from single billets of aerospace 6061-T6 aluminum without compromise. Explore the interactive 3D Fibonacci sphere archive of 21 bespoke forged monoblock studies.
+              </p>
+              <div className="pt-2 flex flex-wrap items-center gap-4">
+                <a
+                  href="/wheels"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-white text-slate-950 hover:bg-slate-200 font-semibold text-xs uppercase tracking-wider transition-colors shadow-lg"
+                >
+                  <span>Launch 3D Wheel Archive</span>
+                  <ArrowRight className="w-4 h-4" />
+                </a>
+                <span className="text-xs text-slate-500 uppercase tracking-wider">
+                  Interactive 60fps 3D Sphere Experience
+                </span>
+              </div>
+            </div>
+
+            <div className="lg:col-span-5 relative h-64 sm:h-72 rounded-xl overflow-hidden border border-[#1b2334] bg-[#111622]">
+              <Image
+                src="https://images.unsplash.com/photo-1611859266238-4b98091d9d9b?auto=format&fit=crop&w=800&q=82"
+                alt="Julian Vance Forged Alloy Wheel"
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#06080d] via-transparent to-transparent" />
+              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs text-slate-300">
+                <span className="font-semibold text-white">Center-Lock RS · Weissach</span>
+                <span className="text-[10px] font-mono uppercase bg-[#06080d]/80 px-2 py-0.5 rounded border border-[#1e273a]">
+                  6061-T6 Monoblock
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </section>

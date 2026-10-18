@@ -14,6 +14,7 @@ import {
   X,
   Phone,
   Compass,
+  Disc,
 } from "lucide-react";
 
 interface NavbarProps {
@@ -27,6 +28,7 @@ export function Navbar({ dealershipName = "Northstar Motors", onOpenAi }: Navbar
 
   const navLinks = [
     { label: "Inventory", href: "/inventory", icon: Car },
+    { label: "Forged Wheels", href: "/wheels", icon: Disc },
     { label: "Compare", href: "/compare", icon: Layers },
     { label: "Financing & EMI", href: "/finance", icon: Calculator },
     { label: "Trade-In", href: "/trade-in", icon: RefreshCw },
